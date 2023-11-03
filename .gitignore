@@ -1,3 +1,8 @@
+plaintext
 node_modules
+.env
+build
+.DS_Store
+*.db
 dist
 .idea
