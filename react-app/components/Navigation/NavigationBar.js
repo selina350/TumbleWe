@@ -1,7 +1,20 @@
 import React from 'react'
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material'
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { Link } from 'react-router-dom'
 
+import { styled } from '@mui/material/styles';
+
+const HomeLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+`
 const NavigationBar = () => {
   return (
     <AppBar position="static">
@@ -16,9 +29,11 @@ const NavigationBar = () => {
           <MenuIcon/>
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Selina's Website
+          <HomeLink to="/">
+            Selina's Website
+          </HomeLink>
         </Typography>
-        <Button color="inherit">Login</Button>
+        <Button component={Link} to="/login" color="inherit">Login</Button>
       </Toolbar>
     </AppBar>
   )

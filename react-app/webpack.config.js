@@ -2,7 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  mode:'development',
+  mode: 'development',
   entry: './index.js',
   output: {
     filename: 'main.js',
@@ -22,15 +22,22 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
-  plugins:[new HtmlWebpackPlugin({
-    template:'./index.html'
-  })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+    })],
   devServer: {
     historyApiFallback: true,
     port: 8080,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        router: () => 'http://localhost:5000',
+      },
+    },
   },
 }
