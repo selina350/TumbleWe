@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify
-from flask_login import login_required
+from flask_login import login_required, current_user
 from app.models import User
 
 user_routes = Blueprint('users', __name__)
@@ -15,11 +15,11 @@ def users():
     return {'users': [user.to_dict() for user in users]}
 
 
-@user_routes.route('/<int:id>')
-@login_required
-def user(id):
+@user_routes.route('/me')
+def user():
     """
-    Query for a user by id and returns that user in a dictionary
+    Authenticates a user.
     """
-    user = User.query.get(id)
-    return user.to_dict()
+    if current_user.is_authenticated:
+        return current_user.to_dict()
+    return {'errors': ['Unauthorized']}

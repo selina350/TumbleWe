@@ -1,13 +1,13 @@
 import React from "react";
-import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 import Container from "@mui/material/Container";
 
-const LoginContainer = () => {
+const SignupContainer = () => {
   return (
     <Container maxWidth="xs">
-      <LoginForm />
+      <SignupForm />
     </Container>
   );
 };
 
-export default LoginContainer;
+export default SignupContainer;
