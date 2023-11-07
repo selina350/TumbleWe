@@ -1,5 +1,4 @@
 import os
-import email_validator
 from flask import Flask, render_template, request, session, redirect
 from flask_cors import CORS
 from flask_migrate import Migrate
