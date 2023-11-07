@@ -38,7 +38,7 @@ class Step(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "ownerId": self.ownerId,
+            "applicationId": self.applicationId,
             # "address": self.address,
             # "city": self.city,
             # "state": self.state,
