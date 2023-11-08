@@ -4,8 +4,12 @@ import axios from "axios";
 //action creation by thunk
 export const fetchUser = () => async (dispatch) => {
   dispatch(fetchUserRequest());
-  const response = await axios("/api/users/me");
-  dispatch(fetchUserSuccess(response.data));
+  try{
+    const response = await axios("/api/users/me");
+    dispatch(fetchUserSuccess(response.data));
+  }catch (e){
+
+  }
 };
 
 export const login = (email, password) => async (dispatch) => {
