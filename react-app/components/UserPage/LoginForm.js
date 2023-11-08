@@ -1,49 +1,8 @@
-// import React from "react";
-// import { Typography, Grid, TextField, Button } from "@mui/material";
-// import { Link } from "react-router-dom";
-
-// const LoginForm = () => {
-//   return (
-//     <Grid container spacing={2} direction={"column"}>
-//       <Grid item>
-//         <Typography textAlign="center" variant="h4">
-//           Login to Selina's website
-//         </Typography>
-//       </Grid>
-//       <Grid item container direction={"column"} spacing={1}>
-//         <Grid item>
-//           <Typography>Email</Typography>
-//           <TextField type="email" variant="outlined" fullWidth />
-//         </Grid>
-//         <Grid item>
-//           <Typography>Password</Typography>
-//           <TextField type="password" variant="outlined" fullWidth />
-//         </Grid>
-//       </Grid>
-//       <Grid item container direction={"column"} spacing={2}>
-//         <Grid item>
-//           <Button variant="contained" fullWidth>
-//             Login
-//           </Button>
-//         </Grid>
-//         <Grid item>
-//           <Typography textAlign="center">
-//             New to Selina's Website? <Link to="/signup">Create an account</Link>
-//           </Typography>
-//         </Grid>
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default LoginForm;
-
-
 import React, { useState } from "react";
 import { login } from "../../redux/controller/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-// import "./LoginForm.css";
+import "./LoginForm.css";
 
 function LoginFormPage() {
   const dispatch = useDispatch();
@@ -52,12 +11,13 @@ function LoginFormPage() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-//   if (sessionUser) return <Redirect to="/" />;
+  //   if (sessionUser) return <Redirect to="/" />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await dispatch(login(email, password));
     if (data) {
+      console.log(data);
       setErrors(data);
     }
   };
@@ -66,7 +26,7 @@ function LoginFormPage() {
 
     dispatch(login("demo@aa.io", "password")).catch(async (res) => {
       const data = await res.json();
-      console.log(data)
+      console.log(data);
       if (data && data.errors) setErrors(data.errors);
     });
   };
@@ -81,11 +41,7 @@ function LoginFormPage() {
             </div>
             {errors.length > 0 && (
               <div>
-                <ul>
-                  {errors.map((error, idx) => (
-                    <li key={idx}>{error}</li>
-                  ))}
-                </ul>
+               <h4 className="error-msg">Either email or password was wrong, please try again.</h4>
               </div>
             )}
             <div className="login-form-input-container">
@@ -107,17 +63,27 @@ function LoginFormPage() {
               />
             </div>
             <div>
-              <button className="cart-button" type="submit">
+              <button className="signup-login-button" type="submit">
                 Log In
               </button>
             </div>
             <div>
               <button
-                className="login-button"
+                className="signup-login-button"
                 type="submit"
                 onClick={handleDemoUserLogIn}
               >
                 Demo User Log In
+              </button>
+            </div>
+            <h3>New to Selina's website?</h3>
+            <div>
+              <button
+                className="signup-login-button"
+                type="submit"
+                onClick={handleDemoUserLogIn}
+              >
+                Sign Up
               </button>
             </div>
           </form>
