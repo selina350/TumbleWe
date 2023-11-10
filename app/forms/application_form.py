@@ -34,16 +34,6 @@ def validateName(form, field):
     raise ValidationError('Please enter a name.')
   if len(name) > 50:
     raise ValidationError('Name is too long.')
-# def validateType(form, field):
-#   type = field.data
-#   if not type:
-#     raise ValidationError('Please select a type.')
-#   if len(type) > 50:
-#     raise ValidationError('Length of type is too long.')
-# def validateImage(form, field):
-#   image = field.data
-#   if not image:
-#     raise ValidationError('Please enter an image url.')
 
 class ApplicationForm(FlaskForm):
 #   address = StringField('address', validators=[DataRequired(), Length(max=50), validateAddress])

@@ -1,17 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { login } from "../../redux/controller/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 function LoginFormPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.controller.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
-  //   if (sessionUser) return <Redirect to="/" />;
+  useEffect(() => {
+    if (sessionUser) {
+      navigate("/");
+    }
+  }, [sessionUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,7 +46,9 @@ function LoginFormPage() {
             </div>
             {errors.length > 0 && (
               <div>
-               <h4 className="error-msg">Either email or password was wrong, please try again.</h4>
+                <h4 className="error-msg">
+                  Either email or password was wrong, please try again.
+                </h4>
               </div>
             )}
             <div className="login-form-input-container">
