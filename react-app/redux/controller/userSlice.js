@@ -4,8 +4,12 @@ import axios from "axios";
 //action creation by thunk
 export const fetchUser = () => async (dispatch) => {
   dispatch(fetchUserRequest());
-  const response = await axios("/api/users/me");
-  dispatch(fetchUserSuccess(response.data));
+  try{
+    const response = await axios("/api/users/me");
+    dispatch(fetchUserSuccess(response.data));
+  }catch (e){
+
+  }
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -58,28 +62,6 @@ export const signUp = (email, username, password) => async (dispatch) => {
     }
   }
 };
-
-// export const editUserThunk = (user) => async (dispatch) => {
-//   const response = await axios("/api/session/userInfo", {
-//     method: "PUT",
-//     body: JSON.stringify(user),
-//   });
-
-//   const data = await response.json();
-//   dispatch(setUser(data));
-//   return response;
-// };
-
-// export const deleteUserThunk = () => async (dispatch) => {
-//   const response = await axios("/api/session/userInfo", {
-//     method: "DELETE",
-//   });
-
-//   if (response.ok) {
-//     dispatch(removeUser());
-//   }
-//   return response;
-// };
 
 const userSlice = createSlice({
   name: "user",

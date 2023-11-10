@@ -15,7 +15,7 @@ def users():
     users = User.query.all()
     return {'users': [user.to_dict() for user in users]}
 
-
+#get the current user
 @user_routes.route('/me')
 def user():
     """
@@ -25,7 +25,7 @@ def user():
         return current_user.to_dict()
     return {'errors': ['Unauthorized']}
 
-
+#edit the current user
 @user_routes.route('/me', methods=['PUT'])
 @login_required
 def update_user_info():
@@ -40,3 +40,14 @@ def update_user_info():
     db.session.commit()
     return user.to_dict()
   return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+#delete the current user
+@user_routes.route('/me', methods=['DELETE'])
+@login_required
+def delete_user():
+  user = User.query.get(current_user.id)
+  if not user:
+     return {"error":"user not found"}, 404
+  db.session.delete(user)
+  db.session.commit()
+  return { 'message': 'Deleted successfully' }
