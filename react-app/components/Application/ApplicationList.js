@@ -54,9 +54,7 @@ const ApplicationList = ({ applications }) => {
           return (
             <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
               <ApplicationCard
-
                 application={app}
-                key={app.id}
                 onMenuClick={handleMenuClick}
               />
             </Grid>
