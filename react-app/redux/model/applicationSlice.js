@@ -52,8 +52,8 @@ export const createApp = () => async (dispatch) => {
 
 export const editApp = (id, name) => async (dispatch) => {
   try {
-    const response = await axios.put(`/api/applications/${id}`,{
-      name
+    const response = await axios.put(`/api/applications/${id}`, {
+      name,
     });
     const { data } = response;
     console.log(data);
@@ -78,6 +78,30 @@ export const editApp = (id, name) => async (dispatch) => {
   }
 };
 
+export const deleteApp = (id) => async (dispatch) => {
+  try {
+    const response = await axios.delete(`/api/applications/${id}`);
+    const { data } = response;
+    dispatch(deleteApplicationSuccess({ id }));
+    return data;
+  } catch (e) {
+    const { response } = e;
+    if (response.status < 500) {
+      const { data } = response;
+
+      if (data.errors) {
+        const formattedErrors = {};
+        for (const err of data.errors) {
+          const splitErr = err.split(" : ");
+          formattedErrors[splitErr[0]] = splitErr[1];
+        }
+        throw Error(formattedErrors);
+      } else {
+        throw Error(["An error occurred. Please try again."]);
+      }
+    }
+  }
+};
 const applicationSlice = createSlice({
   name: "application",
   initialState: { fetchPending: true },
@@ -88,8 +112,12 @@ const applicationSlice = createSlice({
         state[app.id] = app;
       });
     },
+    deleteApplicationSuccess(state, action) {
+      delete state[action.payload.id];
+    },
   },
 });
 
-export const { fetchApplicationSuccess } = applicationSlice.actions;
+export const { fetchApplicationSuccess, deleteApplicationSuccess } =
+  applicationSlice.actions;
 export default applicationSlice.reducer;

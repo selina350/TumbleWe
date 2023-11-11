@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ApplicationCard from "./ApplicationCard";
 import {
   Card,
@@ -8,16 +8,35 @@ import {
   Paper,
   Typography,
   Button,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { createApp } from "../../redux/model/applicationSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createApp,
+  deleteApp,
+  getAllApps,
+} from "../../redux/model/applicationSlice";
 
 const ApplicationList = ({ applications }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+  const handleMenuClick = (event, appId) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedId(appId);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  const handleDeleteApplication = async () => {
+    await dispatch(deleteApp(selectedId));
+    setAnchorEl(null);
+  };
   const handleSumbit = async (e) => {
     e.preventDefault();
     try {
@@ -29,38 +48,48 @@ const ApplicationList = ({ applications }) => {
   };
 
   return (
-    <Grid container spacing={2}>
-      {applications.map((app) => {
-        return (
-          <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
-            <ApplicationCard application={app} />
-          </Grid>
-        );
-      })}
-      <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
-        <Card sx={{ minWidth: 200 }} onClick={handleSumbit}>
-          <CardActionArea>
-            <CardContent sx={{ minHeight: 150, display: "flex" }}>
-              <Grid container direction="column">
-                <Grid item>
-                  {" "}
-                  <AddIcon />{" "}
+    <>
+      <Grid container spacing={2}>
+        {applications.map((app) => {
+          return (
+            <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+              <ApplicationCard
+
+                application={app}
+                key={app.id}
+                onMenuClick={handleMenuClick}
+              />
+            </Grid>
+          );
+        })}
+        <Grid item xs={6} sm={4} md={3} lg={2} xl={2}>
+          <Card sx={{ minWidth: 200 }} onClick={handleSumbit}>
+            <CardActionArea>
+              <CardContent sx={{ minHeight: 150, display: "flex" }}>
+                <Grid container direction="column">
+                  <Grid item>
+                    {" "}
+                    <AddIcon />{" "}
+                  </Grid>
+                  <Grid item xs>
+                    {" "}
+                  </Grid>
+                  <Grid item>
+                    <Typography>
+                      {/* <Button component={Link} to="/login" color="inherit">New Application</Button> */}
+                      New Application
+                    </Typography>
+                  </Grid>
                 </Grid>
-                <Grid item xs>
-                  {" "}
-                </Grid>
-                <Grid item>
-                  <Typography>
-                    {/* <Button component={Link} to="/login" color="inherit">New Application</Button> */}
-                    New Application
-                  </Typography>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </CardActionArea>
-        </Card>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+      <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleCloseMenu}>
+        <MenuItem onClick={handleDeleteApplication}>Delete</MenuItem>
+      </Menu>
+    </>
   );
 };
 
