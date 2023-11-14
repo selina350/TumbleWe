@@ -1,6 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import usersReducer from "./controller/userSlice";
 import applicationReducer from "./model/applicationSlice";
+import fileReducer from "./model/fileSlice";
 import logger from "redux-logger";
 
 const controller = combineReducers({
@@ -8,6 +9,7 @@ const controller = combineReducers({
 });
 const model = combineReducers({
   applications: applicationReducer,
+  files: fileReducer,
 });
 export default configureStore({
   reducer: {

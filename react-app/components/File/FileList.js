@@ -12,10 +12,9 @@ const FileList = () => {
   const { id } = useParams();
   const dispatch = useDispatch()
   const fileList = useSelector((state) => state.model.files);
-  console.log(typeof fileList)
   const applications = useSelector((state) => state.model.applications);
   const currentApplication = applications[id];
-  console.log(currentApplication)
+
   useEffect(() => {
     dispatch(getAllFiles(id));
   }, [dispatch]);
@@ -25,8 +24,8 @@ const FileList = () => {
         <h2>File List</h2>
         {fileList.map((file) => (
           <div>
-            <div>{file.name}</div>
-            <div>{file.imgUrl}</div>
+            <div>name: {file.name}</div>
+            <div>imageUrl: {file.imgUrl}</div>
           </div>
         ))}
         <ul></ul>
