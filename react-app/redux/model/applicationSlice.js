@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import request from '../request'
 
 //action creation by thunk
 export const getAllApps = () => async (dispatch) => {
   try {
-    const response = await axios("/api/applications");
+    const response = await request.get("/api/applications");
     const { data } = response;
     dispatch(fetchApplicationSuccess(data.applications));
   } catch (e) {

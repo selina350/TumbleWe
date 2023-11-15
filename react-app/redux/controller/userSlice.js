@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import request from '../request'
 
 //action creation by thunk
 export const fetchUser = () => async (dispatch) => {
   dispatch(fetchUserRequest());
   try {
-    const response = await axios("/api/users/me");
+    const response = await request.get("/api/users/me");
     dispatch(fetchUserSuccess(response.data));
   } catch (e) {}
 };
