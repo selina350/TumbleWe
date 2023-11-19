@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Grid, TextField } from "@mui/material";
-import FileList from "../File/FileList";
+import { Box, Divider, Grid, TextField, Typography } from '@mui/material'
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllApps,
   createApp,
   editApp,
 } from "../../redux/model/applicationSlice";
+
+import FileManageContainer from '../File/FileManageContainer'
+import PublicIcon from '@mui/icons-material/Public'
 
 const ApplicationContainer = () => {
   const { id } = useParams();
@@ -39,7 +41,21 @@ const ApplicationContainer = () => {
   return (
     <Box sx={{ padding: 2 }}>
       <Grid container direction="column" spacing={2}>
-        <Grid item container alignItems="center">
+        <Grid item container spacing={2}>
+          <Grid item>
+            <PublicIcon color="disabled"/>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" textTransform="uppercase">
+              Application
+            </Typography>
+            <div><a href={`//${location.host.replace('www', 'app')}`}>{location.host.replace('www', 'app')}</a></div>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <Divider/>
+        </Grid>
+        <Grid item container alignItems="flex-start">
           <Grid item xs={12} md={2}>
             Name:
           </Grid>
@@ -54,12 +70,12 @@ const ApplicationContainer = () => {
             />
           </Grid>
         </Grid>
-        <Grid item container alignItems="center">
+        <Grid item container alignItems="flex-start">
           <Grid item xs={12} md={2}>
             Files:
           </Grid>
           <Grid item xs>
-            <FileList />
+            <FileManageContainer/>
           </Grid>
         </Grid>
       </Grid>

@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import request from '../request'
 
 //action creation by thunk
 export const fetchUser = () => async (dispatch) => {
   dispatch(fetchUserRequest());
-  try{
-    const response = await axios("/api/users/me");
+  try {
+    const response = await request.get("/api/users/me");
     dispatch(fetchUserSuccess(response.data));
-  }catch (e){
-
-  }
+  } catch (e) {}
 };
 
 export const login = (email, password) => async (dispatch) => {
@@ -32,6 +31,13 @@ export const login = (email, password) => async (dispatch) => {
       return ["An error occurred. Please try again."];
     }
   }
+};
+
+export const logout = () => async (dispatch) => {
+  try {
+    await axios.get("/api/auth/logout");
+    dispatch(logoutSuccess());
+  } catch (e) {}
 };
 
 export const signUp = (email, username, password) => async (dispatch) => {
@@ -74,10 +80,16 @@ const userSlice = createSlice({
       state.fetchPending = false;
       state.id = action.payload.id;
       state.username = action.payload.username;
-      state.email = action.payload.email
+      state.email = action.payload.email;
+    },
+    logoutSuccess(state, action) {
+      state = {};
+      state.fetchPending = false;
+      return state;
     },
   },
 });
 
-export const { fetchUserRequest, fetchUserSuccess } = userSlice.actions;
+export const { fetchUserRequest, fetchUserSuccess, logoutSuccess } =
+  userSlice.actions;
 export default userSlice.reducer;

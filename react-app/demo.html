@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>React App</title>
+    <script defer="defer" src="/js/main.js"></script>
+    <link href="/css/main.css" rel="stylesheet" />
+
+    <script>
+      const sleep = (ms) => {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      };
+      addEventListener("DOMContentLoaded", async (event) => {
+        await sleep(1000);
+        const input = document.querySelector("input");
+        input.focus();
+        input.setAttribute("value", "test Value");
+        await sleep(1000);
+        input.dispatchEvent(new Event("input", { bubbles: true }));
+        await sleep(1000);
+        const button = document.querySelector("button");
+        button.click();
+      });
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>

@@ -13,7 +13,7 @@ function LoginFormPage() {
   const [errors, setErrors] = useState([]);
 
   useEffect(() => {
-    if (sessionUser) {
+    if (sessionUser.email) {
       navigate("/");
     }
   }, [sessionUser, navigate]);
@@ -34,6 +34,10 @@ function LoginFormPage() {
       console.log(data);
       if (data && data.errors) setErrors(data.errors);
     });
+  };
+
+  const handleSignUp = (e) => {
+    navigate("/signup");
   };
 
   return (
@@ -88,7 +92,7 @@ function LoginFormPage() {
               <button
                 className="signup-login-button"
                 type="submit"
-                onClick={handleDemoUserLogIn}
+                onClick={handleSignUp}
               >
                 Sign Up
               </button>

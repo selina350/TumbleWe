@@ -1,13 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import request from '../request'
 
 //action creation by thunk
-export const getAllApps = () => async (dispatch) => {
+export const getAllFiles = (appId) => async (dispatch) => {
   try {
-    const response = await request.get("/api/applications");
+    const response = await axios(`/api/applications/${appId}/files`);
     const { data } = response;
-    dispatch(fetchApplicationSuccess(data.applications));
+    const payload = data.files.reduce((obj, file) => {
+      obj[file.id] = file;
+      return obj;
+    }, {});
+    dispatch(fetchFileSuccess(data.files));
   } catch (e) {
     console.log(e);
     const { response } = e;
@@ -22,15 +25,15 @@ export const getAllApps = () => async (dispatch) => {
   }
 };
 
-export const createApp = () => async (dispatch) => {
-  const name = new Date().getTime().toString(32);
+export const createFile = (appId, name, url) => async (dispatch) => {
   try {
-    const response = await axios.post("/api/applications", {
+    const response = await axios.post(`/api/applications/${appId}/files`, {
       name,
+      url,
     });
     const { data } = response;
     console.log(data);
-    dispatch(fetchApplicationSuccess([data]));
+    dispatch(fetchFileSuccess([data]));
     return data;
   } catch (e) {
     const { response } = e;
@@ -51,14 +54,15 @@ export const createApp = () => async (dispatch) => {
   }
 };
 
-export const editApp = (id, name) => async (dispatch) => {
+export const editFile = (file, name, url) => async (dispatch) => {
   try {
-    const response = await axios.put(`/api/applications/${id}`, {
+    const response = await axios.put(`/api/files/${file.id}`, {
       name,
+      url,
     });
     const { data } = response;
     console.log(data);
-    dispatch(fetchApplicationSuccess([data]));
+    dispatch(fetchFileSuccess([data]));
     return data;
   } catch (e) {
     const { response } = e;
@@ -79,11 +83,11 @@ export const editApp = (id, name) => async (dispatch) => {
   }
 };
 
-export const deleteApp = (id) => async (dispatch) => {
+export const deleteFile = (id) => async (dispatch) => {
   try {
-    const response = await axios.delete(`/api/applications/${id}`);
+    const response = await axios.delete(`/api/files/${id}`);
     const { data } = response;
-    dispatch(deleteApplicationSuccess({ id }));
+    dispatch(deleteFileSuccess({ id }));
     return data;
   } catch (e) {
     const { response } = e;
@@ -103,22 +107,21 @@ export const deleteApp = (id) => async (dispatch) => {
     }
   }
 };
-const applicationSlice = createSlice({
-  name: "application",
+const fileSlice = createSlice({
+  name: "file",
   initialState: { fetchPending: true },
   reducers: {
-    fetchApplicationSuccess(state, action) {
+    fetchFileSuccess(state, action) {
       state.fetchPending = false;
-      action.payload.forEach((app) => {
-        state[app.id] = app;
+      action.payload.forEach((file) => {
+        state[file.id] = file;
       });
     },
-    deleteApplicationSuccess(state, action) {
+    deleteFileSuccess(state, action) {
       delete state[action.payload.id];
     },
   },
 });
 
-export const { fetchApplicationSuccess, deleteApplicationSuccess } =
-  applicationSlice.actions;
-export default applicationSlice.reducer;
+export const { fetchFileSuccess, deleteFileSuccess } = fileSlice.actions;
+export default fileSlice.reducer;
