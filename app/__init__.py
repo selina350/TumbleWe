@@ -10,10 +10,13 @@ from .api.auth_routes import auth_routes
 from .api.application_routes import application_routes
 from .api.file_routes import file_routes
 from .api.step_routes import step_routes
+from .api.subdomain_routes import subdomain_routes
 from .seeds import seed_commands
 from .config import Config
 
-app = Flask(__name__, static_folder='../react-app/dist', static_url_path='/')
+app = Flask(__name__,
+            subdomain_matching=True,
+              static_folder='../react-app/dist', static_url_path='/')
 
 # Setup login manager
 login = LoginManager(app)
@@ -29,11 +32,12 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
-app.register_blueprint(user_routes, url_prefix='/api/users')
-app.register_blueprint(auth_routes, url_prefix='/api/auth')
-app.register_blueprint(application_routes, url_prefix='/api/applications')
-app.register_blueprint(file_routes, url_prefix='/api')
-app.register_blueprint(step_routes, url_prefix='/api')
+app.register_blueprint(user_routes, url_prefix='/api/users', subdomain="www")
+app.register_blueprint(auth_routes, url_prefix='/api/auth', subdomain="www")
+app.register_blueprint(application_routes, url_prefix='/api/applications', subdomain="www")
+app.register_blueprint(file_routes, url_prefix='/api', subdomain="www")
+app.register_blueprint(step_routes, url_prefix='/api', subdomain="www")
+app.register_blueprint(subdomain_routes, url_prefix='/', subdomain="<subdomain>")
 db.init_app(app)
 Migrate(app, db)
 

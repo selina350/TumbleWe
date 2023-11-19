@@ -5,11 +5,11 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_files():
     file1 = File(
-        applicationId=1, name='file1', imageUrl="file")
+        applicationId=1, name='file1', url="file")
     file2 = File(
-        applicationId=1, name='file2',imageUrl="file")
+        applicationId=1, name='file2',url="file")
     file3 = File(
-        applicationId=2, name='file3',imageUrl="file")
+        applicationId=2, name='file3',url="file")
 
     db.session.add(file1)
     db.session.add(file2)

@@ -39,7 +39,7 @@ def create_step(applicationId):
         new_step= Step(
             applicationId=application.id,
             name=data["name"],
-            imageUrl=data['imageUrl'],
+            url=data["url"],
             selector=data["selector"]
         )
 
@@ -66,7 +66,7 @@ def edit_step(stepId):
     if form.validate_on_submit():
         data = form.data
         step.name=data["name"]
-        step.imageUrl=data["imageUrl"]
+        step.url=data["url"]
         step.selector=data["selector"]
         db.session.commit()
         return step.to_dict()

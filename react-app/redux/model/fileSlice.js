@@ -25,11 +25,11 @@ export const getAllFiles = (appId) => async (dispatch) => {
   }
 };
 
-export const createFile = (appId, name, imageUrl) => async (dispatch) => {
+export const createFile = (appId, name, url) => async (dispatch) => {
   try {
     const response = await axios.post(`/api/applications/${appId}/files`, {
       name,
-      imageUrl,
+      url,
     });
     const { data } = response;
     console.log(data);
@@ -54,11 +54,11 @@ export const createFile = (appId, name, imageUrl) => async (dispatch) => {
   }
 };
 
-export const editFile = (file, name, imageUrl) => async (dispatch) => {
+export const editFile = (file, name, url) => async (dispatch) => {
   try {
     const response = await axios.put(`/api/files/${file.id}`, {
       name,
-      imageUrl,
+      url,
     });
     const { data } = response;
     console.log(data);

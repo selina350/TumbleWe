@@ -4,6 +4,7 @@ from app.forms import FileForm
 
 from flask_login import current_user, login_required
 from app.utils.validate_errors import validation_errors_to_error_messages
+from app.utils.s3_helper import delete_s3_object
 
 file_routes = Blueprint('files', __name__)
 
@@ -39,7 +40,7 @@ def create_file(applicationId):
         new_file = File(
             applicationId=application.id,
             name=data["name"],
-            imageUrl=data['imageUrl']
+            url=data["url"]
         )
 
         db.session.add(new_file)
@@ -64,12 +65,11 @@ def edit_file(fileId):
     if form.validate_on_submit():
         data = form.data
         file.name=data["name"]
-        file.imageUrl=data["imageUrl"]
+        file.url=data["url"]
         db.session.commit()
         return file.to_dict()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
-
 
 #delete the current file
 @file_routes.route("/files/<int:fileId>", methods=['DELETE'])
@@ -81,6 +81,8 @@ def delete_file(fileId):
     application = Application.query.filter(Application.id==file.applicationId).first()
     if application.ownerId != current_user.id:
         return jsonify({"error": "Unauthorized"}), 403
+    print(file.name)
+    delete_s3_object(file.name)
     db.session.delete(file)
     db.session.commit()
     return {'message': 'Successfully deleted!'}
