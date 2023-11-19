@@ -28,3 +28,6 @@ greenlet==1.1.0
 Mako==1.1.4
 flask-wtf==1.1.2
 email-validator==2.1.0.post1
+flask-s3==0.3.3
+boto3==1.29.3
+beautifulsoup4==4.12.2
