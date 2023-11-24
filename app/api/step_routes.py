@@ -4,6 +4,7 @@ from app.forms import StepForm
 
 from flask_login import current_user, login_required
 from app.utils.validate_errors import validation_errors_to_error_messages
+from app.utils.subdomain_helper import extract_subdomain
 
 step_routes = Blueprint('steps', __name__)
 
@@ -40,7 +41,8 @@ def create_step(applicationId):
             applicationId=application.id,
             name=data["name"],
             url=data["url"],
-            selector=data["selector"]
+            selector=data["selector"],
+            type=data["type"]
         )
 
         db.session.add(new_step)
@@ -68,6 +70,7 @@ def edit_step(stepId):
         step.name=data["name"]
         step.url=data["url"]
         step.selector=data["selector"]
+        step.type=data["type"]
         db.session.commit()
         return step.to_dict()
     else:
@@ -87,3 +90,23 @@ def delete_step(stepId):
     db.session.delete(step)
     db.session.commit()
     return {'message': 'Successfully deleted!'}
+
+#public api to get steps of an application by subdomain name
+@step_routes.route("/steps", methods=['GET'])
+def get_steps_by_app_name():
+   # Get the 'Origin' header from the request
+    origin = request.headers.get('Origin')
+
+    # Check if the request has a valid 'Origin' header
+    if not origin:
+        return {"error": 'No Origin header in the request'}, 404
+
+    # Extract subdomain from 'Origin' header
+    app_name = extract_subdomain(origin)
+    application = Application.query.filter(Application.name == app_name).first()
+
+    if not application:
+        return {"error":"application doesn't exist"},404
+
+    steps = Step.query.filter(Step.applicationId == application.id)
+    return {'steps': [step.to_dict() for step in steps]}

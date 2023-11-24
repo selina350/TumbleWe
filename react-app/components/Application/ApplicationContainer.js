@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Divider, Grid, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  ClickAwayListener,
+  Divider,
+  Grid,
+  IconButton,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllApps,
@@ -8,12 +18,18 @@ import {
   editApp,
 } from "../../redux/model/applicationSlice";
 
-import FileManageContainer from '../File/FileManageContainer'
-import PublicIcon from '@mui/icons-material/Public'
+import FileManageContainer from "../File/FileManageContainer";
+import PublicIcon from "@mui/icons-material/Public";
+import EditIcon from "@mui/icons-material/Edit";
+import { Visibility } from "@mui/icons-material";
+import StepTable from "../Step/StepTable";
 
 const ApplicationContainer = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [shouldShowEdit, setShouldShowEdit] = useState(false);
+  const [tab, setTab] = useState(0);
   const applications = useSelector((state) => state.model.applications);
   const dispatch = useDispatch();
 
@@ -31,52 +47,81 @@ const ApplicationContainer = () => {
     return <div>Loading...</div>;
   }
   const currentApplication = applications[id];
-  const handleSave = () => {
-    let newName = name
-    if(name.length === 0){
-      newName = currentApplication.name
+
+  const handleNameInputKeyDown = async (event) => {
+    if (event.keyCode == 13) {
+      if (name.length > 0) {
+        await dispatch(editApp(id, name));
+      }
+      setIsEditingName(false);
     }
-    dispatch(editApp(id, newName));
   };
+
+  const viewAppUrl = location.host.replace("www", currentApplication.name);
+
   return (
     <Box sx={{ padding: 2 }}>
-      <Grid container direction="column" spacing={2}>
-        <Grid item container spacing={2}>
-          <Grid item>
-            <PublicIcon color="disabled"/>
+      <Grid container direction="column" gap={2}>
+        <Grid item container direction="column">
+          <Grid item container spacing={1} alignItems="end">
+            <Grid item>
+              <PublicIcon fontSize="small" />
+            </Grid>
+            <Grid item>
+              <Typography variant="overline" textTransform="uppercase">
+                Application
+              </Typography>
+            </Grid>
           </Grid>
+          {!isEditingName && (
+            <Grid
+              item
+              container
+              onMouseEnter={() => setShouldShowEdit(true)}
+              onMouseLeave={() => setShouldShowEdit(false)}
+            >
+              <Typography variant="h5" onClick={() => setIsEditingName(true)}>
+                {currentApplication.name}
+              </Typography>
+              <IconButton
+                size="small"
+                onClick={() => setIsEditingName(true)}
+                sx={{ visibility: shouldShowEdit ? "visible" : "hidden" }}
+              >
+                <EditIcon />
+              </IconButton>
+            </Grid>
+          )}
+          {isEditingName === true && (
+            <Grid item>
+              <ClickAwayListener onClickAway={() => setIsEditingName(false)}>
+                <TextField
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  onBlur={() => setIsEditingName(false)}
+                  onKeyDown={handleNameInputKeyDown}
+                  fullWidth
+                  autoFocus
+                />
+              </ClickAwayListener>
+            </Grid>
+          )}
           <Grid item>
-            <Typography variant="subtitle1" textTransform="uppercase">
-              Application
-            </Typography>
-            <div><a href={`//${location.host.replace('www', 'app')}`}>{location.host.replace('www', 'app')}</a></div>
+            <a href={`//${viewAppUrl}`}>{viewAppUrl}</a>
           </Grid>
         </Grid>
         <Grid item>
-          <Divider/>
+          <Tabs value={tab} onChange={(event, tab) => setTab(tab)}>
+            <Tab label="Files" />
+            <Tab label="Steps" />
+          </Tabs>
+          <Divider />
         </Grid>
-        <Grid item container alignItems="flex-start">
-          <Grid item xs={12} md={2}>
-            Name:
-          </Grid>
-          <Grid item xs>
-            <TextField
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              onBlur={handleSave}
-              fullWidth
-            />
-          </Grid>
-        </Grid>
-        <Grid item container alignItems="flex-start">
-          <Grid item xs={12} md={2}>
-            Files:
-          </Grid>
-          <Grid item xs>
-            <FileManageContainer/>
-          </Grid>
+        <Grid item>
+          {tab === 0 && <FileManageContainer />}
+          {tab === 1 && <StepTable />}
         </Grid>
       </Grid>
     </Box>

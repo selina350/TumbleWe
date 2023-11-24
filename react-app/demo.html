@@ -15,22 +15,7 @@
     <script defer="defer" src="/js/main.js"></script>
     <link href="/css/main.css" rel="stylesheet" />
 
-    <script>
-      const sleep = (ms) => {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      };
-      addEventListener("DOMContentLoaded", async (event) => {
-        await sleep(1000);
-        const input = document.querySelector("input");
-        input.focus();
-        input.setAttribute("value", "test Value");
-        await sleep(1000);
-        input.dispatchEvent(new Event("input", { bubbles: true }));
-        await sleep(1000);
-        const button = document.querySelector("button");
-        button.click();
-      });
-    </script>
+    <script defer src="/subdomain.js"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -9,9 +9,12 @@ const isMockAPIEnabled = process.env.MOCK_API === "true";
 
 module.exports = {
   mode: "development",
-  entry: ["./index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
+  entry: {
+    subdomain: "./subdomain/index.js",
+    main: ["./index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
+  },
   output: {
-    filename: "main.js",
+    filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
   },
@@ -36,6 +39,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
+      inject: false,
     }),
     new HtmlWebpackPlugin({
       template: "./demo.html",
@@ -61,12 +65,12 @@ module.exports = {
     setupMiddlewares: (middlewares, devServer) => {
       devServer.app.get("/", function (req, res, next) {
         const subdomain = req.headers.host.split(".")[0];
-        if (subdomain === "app" && !isMockAPIEnabled) {
+        if (subdomain !== "www" && subdomain !== "app") {
           createProxyMiddleware({
-            target: "http://app.testtestproject.com:5000",
+            target: `http://${subdomain}.testtestproject.com:5000`,
             changeOrigin: true,
           })(req, res, next);
-        } else if (subdomain === "app" && isMockAPIEnabled) {
+        } else if (subdomain === "app") {
           devServer.compiler.outputFileSystem.readFile(
             path.join(devServer.compiler.outputPath, "demo.html"),
             (err, result) => {

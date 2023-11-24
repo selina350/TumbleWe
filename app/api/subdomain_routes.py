@@ -22,7 +22,7 @@ def get_subdomain_files(subdomain, filename):
         soup = BeautifulSoup(response.data, 'html.parser')
 
         # Create a script tag with a src attribute
-        script_tag = soup.new_tag('script', src=f'//{SERVER_NAME}/main.js')
+        script_tag = soup.new_tag('script', src=f'//{SERVER_NAME}/subdomain.js')
 
         # Append the script tag to the head section
         head_tag = soup.head
