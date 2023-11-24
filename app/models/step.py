@@ -13,6 +13,7 @@ class Step(db.Model):
         add_prefix_for_prod("applications.id")), nullable=False)
     name = db.Column(db.String(60), nullable=False)
     url = db.Column(db.String())
+    type = db.Column(db.String(50),nullable=False)
     selector = db.Column(db.String(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -26,6 +27,6 @@ class Step(db.Model):
             "applicationId": self.applicationId,
             "name": self.name,
             "selector": self.selector,
-            "url": self.url
+            "url": self.url,
+            "type":self.type
         }
-

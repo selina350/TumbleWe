@@ -5,11 +5,11 @@ from sqlalchemy.sql import text
 # Adds a demo user, you can add other users here if you want
 def seed_steps():
     step1 = Step(
-        applicationId=1, name='step1', url="step", selector="selector")
+        applicationId=1, name='step1', url="step",type="input", selector="selector")
     step2 = Step(
-        applicationId=1, name='step2',url="step", selector="selector")
+        applicationId=1, name='step2',url="step", type="buttonClick",selector="selector")
     step3 = Step(
-        applicationId=2, name='step3',url="step", selector="selector")
+        applicationId=2, name='step3',url="step",type="buttonClick", selector="selector")
 
     db.session.add(step1)
     db.session.add(step2)
