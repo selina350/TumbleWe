@@ -1,7 +1,7 @@
 import os
 import boto3
 from flask import Response
-from botocore.exceptions import NoCredentialsError
+from botocore.exceptions import NoCredentialsError, ClientError
 
 S3_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID")
 S3_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY")
@@ -33,19 +33,26 @@ def get_s3_object(key, app_id):
             headers={key: value for key, value in s3_response['ResponseMetadata']['HTTPHeaders'].items() if key.lower() not in ['content-encoding', 'transfer-encoding', 'content-length']}
         )
 
-        return response
+        return response, 200
 
     except NoCredentialsError:
         return "Credentials not available.", 500
 
+    except ClientError as e:
+    # Check if the error code indicates that the object doesn't exist
+        if e.response['Error']['Code'] == 'NoSuchKey':
+            return "Object not found in S3 bucket.", 404  # Return a 404 status code
+
+
 def copy_s3_object(key, app_id):
+
     try:
         s3_client = get_s3_client()
 
         # Specify additional headers if needed
 
         # Make a request to S3
-        s3.copy_object(
+        s3_client.copy_object(
                     Bucket=S3_BUCKET_PERMANENT,
                     CopySource={'Bucket': S3_BUCKET_TEMP, 'Key': f'{app_id}/{key}'},
                     Key=f'{app_id}/{key}'  # Optionally, you can specify a different key for the destination
@@ -53,7 +60,7 @@ def copy_s3_object(key, app_id):
 
         return
     except Exception as e:
-            return jsonify({'error': str(e)}), 500
+            return {'error': str(e)}, 500
 
 
 
