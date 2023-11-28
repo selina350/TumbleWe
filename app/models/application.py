@@ -11,7 +11,7 @@ class Application(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     ownerId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod("users.id")), nullable=False)
-    name = db.Column(db.String(50), nullable=False)
+    name = db.Column(db.String(50), nullable=False, unique=True)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -24,6 +24,7 @@ class Application(db.Model):
             "id": self.id,
             "ownerId": self.ownerId,
             "name": self.name,
+            "createdAt": self.createdAt
         }
 
     def get_applications(self):
@@ -40,4 +41,3 @@ class Application(db.Model):
         return {
             'files': [step.to_dict() for step in self.steps]
         }
-

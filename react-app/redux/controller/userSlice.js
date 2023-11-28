@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import request from '../request'
+import request from "../request";
 
 //action creation by thunk
 export const fetchUser = () => async (dispatch) => {
@@ -69,6 +69,58 @@ export const signUp = (email, username, password) => async (dispatch) => {
   }
 };
 
+export const editUser = (username,oldPassword, newPassword) => async (dispatch) => {
+  try {
+    const response = await axios.put("/api/users/me", {
+      username,
+      oldPassword,
+      newPassword
+    });
+    const { data } = response;
+    dispatch(fetchUserSuccess(data));
+  } catch (e) {
+    const { response } = e;
+    if (response.status < 500) {
+      const { data } = response;
+
+      if (data.errors) {
+        const formattedErrors = {};
+        for (const err of data.errors) {
+          const splitErr = err.split(" : ");
+          formattedErrors[splitErr[0]] = splitErr[1];
+        }
+        return formattedErrors;
+      } else {
+        return ["An error occurred. Please try again."];
+      }
+    }
+  }
+};
+
+export const deleteUser = () => async (dispatch) => {
+  try {
+
+    const response = await axios.delete("/api/users/me");
+    dispatch(deleteUserSuccess());
+  } catch (e) {
+    const { response } = e;
+    if (response.status < 500) {
+      const { data } = response;
+
+      if (data.errors) {
+        const formattedErrors = {};
+        for (const err of data.errors) {
+          const splitErr = err.split(" : ");
+          formattedErrors[splitErr[0]] = splitErr[1];
+        }
+        return formattedErrors;
+      } else {
+        return ["An error occurred. Please try again."];
+      }
+    }
+  }
+};
+
 const userSlice = createSlice({
   name: "user",
   initialState: { fetchPending: true },
@@ -87,9 +139,12 @@ const userSlice = createSlice({
       state.fetchPending = false;
       return state;
     },
+    deleteUserSuccess(state, action) {
+      delete state[action.payload.id];
+    },
   },
 });
 
-export const { fetchUserRequest, fetchUserSuccess, logoutSuccess } =
+export const { fetchUserRequest, fetchUserSuccess, logoutSuccess, deleteUserSuccess } =
   userSlice.actions;
 export default userSlice.reducer;
