@@ -12,12 +12,17 @@ import {
 import PublicIcon from "@mui/icons-material/Public";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
 const ApplicationCard = ({ application, onMenuClick }) => {
   const handleMenuClick = (event) => {
     event.preventDefault();
     onMenuClick(event, application.id);
   };
+
+  const timeAgo = formatDistanceToNow(new Date(application.createdAt), {
+    addSuffix: true,
+  });
   return (
     <Card sx={{ minWidth: 200 }}>
       <CardActionArea
@@ -41,7 +46,7 @@ const ApplicationCard = ({ application, onMenuClick }) => {
             </Grid>
             <Grid item xs></Grid>
             <Grid item>
-              <Chip label="less than a minute ago" size="small" />
+              <Chip label={`created ${timeAgo}`} size="small" />
             </Grid>
           </Grid>
         </CardContent>

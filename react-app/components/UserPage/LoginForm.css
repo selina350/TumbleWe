@@ -1,65 +1,65 @@
 .login-form-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 16px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
 
-  .login-form-container .form-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex-grow: 1;
-    max-width: 314px;
-  }
-  .form-wrapper input,
-  select,
-  textarea {
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid rgb(186, 191, 197);
-  }
-  .form-wrapper label {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  .login-form {
-    display: flex;
-    gap: 16px;
-    flex-direction: column;
-  }
-  .login-form > div {
-    margin-bottom: 8px;
-    display: flex;
-    justify-content: center;
-  }
-  .login-form > h1 {
-    text-align: center;
-  }
+.login-form-container .form-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+  width: 314px;
+}
+.form-wrapper input,
+select,
+textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid rgb(186, 191, 197);
+}
+.form-wrapper label {
+  font-size: 15px;
+  font-weight: 700;
+}
+.login-form {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+.login-form > div {
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: center;
+}
+.login-form > h1 {
+  text-align: center;
+}
 
-  .login-form button {
-    width: 100%;
-    margin-right: 0;
-    text-align: center;
-  }
+.login-form button {
+  width: 100%;
+  margin-right: 0;
+  text-align: center;
+}
 
-  .login-form-input-container {
-    flex-direction: column;
-    gap: 8px;
-  }
+.login-form-input-container {
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .error-msg {
-    color: #FF5A5F;
-  }
-  .signup-login-button {
-    all: unset;
-    font-family: "Fira Sans", sans-serif;
-    cursor: pointer;
-    padding: 0.7rem 1rem;
-    background-color: #EEEEEE;
-    border-radius: 30px;
-    margin-right: 1rem;
-  }
+.error-msg {
+  color: #ff5a5f;
+}
+.signup-login-button {
+  all: unset;
+  font-family: "Fira Sans", sans-serif;
+  cursor: pointer;
+  padding: 0.7rem 1rem;
+  background-color: #eeeeee;
+  border-radius: 30px;
+  margin-right: 1rem;
+}
 h3 {
-    text-align: center;
+  text-align: center;
 }

@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import {
   AppBar,
   Button,
+  Divider,
   IconButton,
+  ListItemIcon,
+  ListSubheader,
   Menu,
   MenuItem,
   Toolbar,
@@ -13,7 +16,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileIcon from "@mui/icons-material/Person";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { logout } from "../../redux/controller/userSlice";
+import Logo from "../icons/Logo";
 
 const HomeLink = styled(Link)`
   text-decoration: none;
@@ -29,19 +34,25 @@ const NavigationBar = () => {
   const handleLogout = async () => {
     setAnchorEl(null);
     await dispatch(logout());
-    window.location.href = '/login';
+    window.location.href = "/login";
     // navigate("/login");
+  };
+
+  const handleProfileButton = async () => {
+    window.location.href = "/profile";
   };
 
   return (
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+          <HomeLink to="/">
+            <IconButton edge="start" disableRipple>
+              <Logo fontSize="large" />
+            </IconButton>
+          </HomeLink>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <HomeLink to="/">Selina's Website</HomeLink>
+            <HomeLink to="/">TumbleWe</HomeLink>
           </Typography>
           {user.email && (
             <IconButton
@@ -65,8 +76,22 @@ const NavigationBar = () => {
         anchorEl={anchorEl}
         open={isMenuOpen}
         onClose={() => setAnchorEl(null)}
+        MenuListProps={{
+          subheader: <ListSubheader>Hi {user.username}!</ListSubheader>,
+        }}
       >
-        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        <MenuItem onClick={handleProfileButton}>
+          <ListItemIcon>
+            <ProfileIcon />
+          </ListItemIcon>{" "}
+          Profile
+        </MenuItem>
+        <MenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <LogoutIcon />
+          </ListItemIcon>{" "}
+          Logout
+        </MenuItem>
       </Menu>
     </>
   );

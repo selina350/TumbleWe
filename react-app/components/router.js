@@ -13,6 +13,8 @@ import { Box } from "@mui/material";
 import ApplicationContainer from "./Application/ApplicationContainer";
 import StepTable from "./Step/StepTable";
 import StepEditContainer from "./Step/StepEditContainer";
+import ProfileContainer from "./UserPage/ProfileContainer";
+import LoginRequiredRoute from "./LoginRequiredRoute";
 
 const HeaderLayout = () => (
   <>
@@ -31,11 +33,30 @@ const router = createBrowserRouter(
       <Route index element={<HomeContainer />} />
       <Route path="/login" element={<LoginContainer />} />
       <Route path="/signup" element={<SignupContainer />} />
-      <Route path="/application/:id" element={<ApplicationContainer />} />
-      <Route path="/application/:id/steps" element={<StepTable />} />
+      <Route path="/profile" element={<ProfileContainer />} />
+      <Route
+        path="/application/:id"
+        element={
+          <LoginRequiredRoute>
+            <ApplicationContainer tab={0} />
+          </LoginRequiredRoute>
+        }
+      />
+      <Route
+        path="/application/:id/steps"
+        element={
+          <LoginRequiredRoute>
+            <ApplicationContainer tab={1} />
+          </LoginRequiredRoute>
+        }
+      />
       <Route
         path="/application/:appId/steps/:stepId/edit"
-        element={<StepEditContainer />}
+        element={
+          <LoginRequiredRoute>
+            <StepEditContainer />
+          </LoginRequiredRoute>
+        }
       />
     </Route>
   )

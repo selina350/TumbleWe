@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   ClickAwayListener,
@@ -24,12 +24,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Visibility } from "@mui/icons-material";
 import StepTable from "../Step/StepTable";
 
-const ApplicationContainer = () => {
+const ApplicationContainer = ({ tab }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
   const [shouldShowEdit, setShouldShowEdit] = useState(false);
-  const [tab, setTab] = useState(0);
+  const [nameError, setNameError] = useState(null);
   const applications = useSelector((state) => state.model.applications);
   const dispatch = useDispatch();
 
@@ -49,11 +50,26 @@ const ApplicationContainer = () => {
   const currentApplication = applications[id];
 
   const handleNameInputKeyDown = async (event) => {
+    //hit enter on keyboard
     if (event.keyCode == 13) {
       if (name.length > 0) {
-        await dispatch(editApp(id, name));
+        const errors = await dispatch(editApp(id, name));
+        if (errors && errors.name) {
+          setNameError(errors.name);
+        } else {
+          setIsEditingName(false);
+        }
+      } else {
+        setIsEditingName(false);
       }
-      setIsEditingName(false);
+    }
+  };
+
+  const handleSwitchTab = (tab) => {
+    if (tab === 1) {
+      navigate(`/application/${id}/steps`);
+    } else {
+      navigate(`/application/${id}`);
     }
   };
 
@@ -99,6 +115,7 @@ const ApplicationContainer = () => {
                   value={name}
                   onChange={(e) => {
                     setName(e.target.value);
+                    setNameError(null);
                   }}
                   onBlur={() => setIsEditingName(false)}
                   onKeyDown={handleNameInputKeyDown}
@@ -106,6 +123,7 @@ const ApplicationContainer = () => {
                   autoFocus
                 />
               </ClickAwayListener>
+              {nameError !== null && <div className="error">{nameError}</div>}
             </Grid>
           )}
           <Grid item>
@@ -113,7 +131,7 @@ const ApplicationContainer = () => {
           </Grid>
         </Grid>
         <Grid item>
-          <Tabs value={tab} onChange={(event, tab) => setTab(tab)}>
+          <Tabs value={tab} onChange={(event, tab) => handleSwitchTab(tab)}>
             <Tab label="Files" />
             <Tab label="Steps" />
           </Tabs>

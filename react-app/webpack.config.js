@@ -40,6 +40,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html",
       inject: false,
+      favicon: "./static/favicon.ico",
     }),
     new HtmlWebpackPlugin({
       template: "./demo.html",
@@ -47,7 +48,7 @@ module.exports = {
       inject: false,
     }),
     new webpack.DefinePlugin({
-      "process.env.S3_BUCKET": JSON.stringify(process.env.S3_BUCKET),
+      "process.env.S3_BUCKET": JSON.stringify(process.env.S3_BUCKET_TEMP),
       "process.env.S3_ACCESS_KEY_ID": JSON.stringify(
         process.env.S3_ACCESS_KEY_ID
       ),

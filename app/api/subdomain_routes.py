@@ -2,6 +2,7 @@ import os
 from flask import Blueprint,request, Response
 from app.utils.s3_helper import get_s3_object
 from bs4 import BeautifulSoup
+from app.models import db, Application
 from werkzeug.exceptions import NotFound
 
 subdomain_routes = Blueprint('subdomain', __name__)
@@ -16,7 +17,12 @@ def get_subdomain_files(subdomain, filename):
     if subdomain == 'www':
         # Let the request continue to the next handler
         return NotFound()
-    response = get_s3_object(filename)
+
+    application = Application.query.filter(Application.name == subdomain).first()
+    if not application:
+        return {"error":"application doesn't exist"}, 404
+
+    response = get_s3_object(filename, application.id)
     if filename == 'index.html':
         # Assuming 'response.data' contains the original HTML content
         soup = BeautifulSoup(response.data, 'html.parser')

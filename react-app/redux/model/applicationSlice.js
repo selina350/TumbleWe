@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import request from '../request'
+import request from "../request";
 
 //action creation by thunk
 export const getAllApps = () => async (dispatch) => {
@@ -43,9 +43,9 @@ export const createApp = () => async (dispatch) => {
           const splitErr = err.split(" : ");
           formattedErrors[splitErr[0]] = splitErr[1];
         }
-        throw Error(formattedErrors);
+        return formattedErrors;
       } else {
-        throw Error(["An error occurred. Please try again."]);
+        return "An error occurred. Please try again.";
       }
     }
   }
@@ -57,23 +57,21 @@ export const editApp = (id, name) => async (dispatch) => {
       name,
     });
     const { data } = response;
-    console.log(data);
     dispatch(fetchApplicationSuccess([data]));
-    return data;
   } catch (e) {
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
-
       if (data.errors) {
         const formattedErrors = {};
+
         for (const err of data.errors) {
           const splitErr = err.split(" : ");
           formattedErrors[splitErr[0]] = splitErr[1];
         }
-        throw Error(formattedErrors);
+        return formattedErrors;
       } else {
-        throw Error(["An error occurred. Please try again."]);
+        return "An error occurred. Please try again.";
       }
     }
   }
