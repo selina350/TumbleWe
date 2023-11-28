@@ -66,12 +66,12 @@ module.exports = {
     setupMiddlewares: (middlewares, devServer) => {
       devServer.app.get("/", function (req, res, next) {
         const subdomain = req.headers.host.split(".")[0];
-        if (subdomain !== "www" && subdomain !== "app") {
+        if (!isMockAPIEnabled && subdomain !== "www") {
           createProxyMiddleware({
             target: `http://${subdomain}.testtestproject.com:5000`,
             changeOrigin: true,
           })(req, res, next);
-        } else if (subdomain === "app") {
+        } else if (isMockAPIEnabled && subdomain === "app") {
           devServer.compiler.outputFileSystem.readFile(
             path.join(devServer.compiler.outputPath, "demo.html"),
             (err, result) => {

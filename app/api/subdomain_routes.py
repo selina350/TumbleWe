@@ -22,8 +22,11 @@ def get_subdomain_files(subdomain, filename):
     if not application:
         return {"error":"application doesn't exist"}, 404
 
-    response = get_s3_object(filename, application.id)
-    if filename == 'index.html':
+    response, status_code = get_s3_object(filename, application.id)
+    if status_code != 200:
+        return response, status_code
+
+    if response and filename == 'index.html':
         # Assuming 'response.data' contains the original HTML content
         soup = BeautifulSoup(response.data, 'html.parser')
 
@@ -43,6 +46,7 @@ def get_subdomain_files(subdomain, filename):
         # Get the modified HTML
         modified_html = str(soup)
         response.data = modified_html
+        response.headers['Content-Type'] = 'text/html'
 
     return response
 
