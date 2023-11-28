@@ -17,8 +17,9 @@ const FileManageContainer = () => {
     const fileName = file.name;
     const fileUrl = file.url
     console.log(fileName);
-    await uploadFileToS3(file);
+    await uploadFileToS3(file, id);
     dispatch(createFile(id, fileName, fileUrl));
+    e.target.value = null;
   };
   const handleFileUpload = async () => {
     uploadFileInputRef.current.click();

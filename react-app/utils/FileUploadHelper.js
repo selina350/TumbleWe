@@ -8,10 +8,10 @@ const client = new S3Client({
   },
 });
 
-export const uploadFileToS3 = async (file) => {
+export const uploadFileToS3 = async (file, appId) => {
   const command = new PutObjectCommand({
     Bucket: process.env.S3_BUCKET,
-    Key: file.name,
+    Key: `${appId}/${file.name}`,
     Body: file,
   });
 

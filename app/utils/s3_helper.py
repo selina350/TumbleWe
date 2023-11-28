@@ -5,7 +5,8 @@ from botocore.exceptions import NoCredentialsError
 
 S3_ACCESS_KEY_ID = os.environ.get("S3_ACCESS_KEY_ID")
 S3_SECRET_ACCESS_KEY = os.environ.get("S3_SECRET_ACCESS_KEY")
-S3_BUCKET = os.environ.get("S3_BUCKET")
+S3_BUCKET_TEMP = os.environ.get("S3_BUCKET_TEMP")
+S3_BUCKET_PERMANENT = os.environ.get("S3_BUCKET_PERMANENT")
 S3_REGION = os.environ.get("S3_REGION")
 
 def get_s3_client():
@@ -16,14 +17,14 @@ def get_s3_client():
         region_name=S3_REGION
     )
 
-def get_s3_object(key):
+def get_s3_object(key, app_id):
     try:
         s3_client = get_s3_client()
 
         # Specify additional headers if needed
 
         # Make a request to S3
-        s3_response = s3_client.get_object(Bucket=S3_BUCKET, Key=key)
+        s3_response = s3_client.get_object(Bucket=S3_BUCKET_PERMANENT, Key= f'{app_id}/{key}')
 
         # Create a Flask response from the S3 response
         response = Response(
@@ -37,14 +38,33 @@ def get_s3_object(key):
     except NoCredentialsError:
         return "Credentials not available.", 500
 
+def copy_s3_object(key, app_id):
+    try:
+        s3_client = get_s3_client()
 
-def delete_s3_object(key):
+        # Specify additional headers if needed
+
+        # Make a request to S3
+        s3.copy_object(
+                    Bucket=S3_BUCKET_PERMANENT,
+                    CopySource={'Bucket': S3_BUCKET_TEMP, 'Key': f'{app_id}/{key}'},
+                    Key=f'{app_id}/{key}'  # Optionally, you can specify a different key for the destination
+                )
+
+        return
+    except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
+
+
+def delete_s3_object(key, app_id):
     try:
         # Create an S3 client
         s3_client = get_s3_client()
 
         # Delete the object
-        s3_client.delete_object(Bucket=S3_BUCKET, Key=key)
+        s3_client.delete_object(Bucket=S3_BUCKET_PERMANENT, Key= f'{app_id}/{key}')
 
         print("File deleted")
 
