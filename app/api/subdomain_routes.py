@@ -1,11 +1,10 @@
 import os
-from flask import Blueprint,request, Response
+from flask import Blueprint,request, Response, abort
 from app.utils.s3_helper import get_s3_object
 from bs4 import BeautifulSoup
 from app.models import db, Application
-from werkzeug.exceptions import NotFound
 
-subdomain_routes = Blueprint('subdomain', __name__)
+subdomain_routes = Blueprint('subdomain', __name__, subdomain="<subdomain>")
 SERVER_NAME = os.environ.get('SERVER_NAME')
 
 #all applications that belong to the current user
@@ -14,9 +13,6 @@ SERVER_NAME = os.environ.get('SERVER_NAME')
 def get_subdomain_files(subdomain, filename):
     print('subdomain', subdomain)
     print('filename', filename)
-    if subdomain == 'www':
-        # Let the request continue to the next handler
-        return NotFound()
 
     application = Application.query.filter(Application.name == subdomain).first()
     if not application:
@@ -31,7 +27,7 @@ def get_subdomain_files(subdomain, filename):
         soup = BeautifulSoup(response.data, 'html.parser')
 
         # Create a script tag with a src attribute
-        script_tag = soup.new_tag('script', src=f'//{SERVER_NAME}/subdomain.js')
+        script_tag = soup.new_tag('script', src=f'//www.{SERVER_NAME}/subdomain.js')
 
         # Append the script tag to the head section
         head_tag = soup.head
