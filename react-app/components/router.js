@@ -11,13 +11,16 @@ import SignupContainer from "./UserPage/SignupContainer";
 import NavigationBar from "./Navigation/NavigationBar";
 import { Box } from "@mui/material";
 import ApplicationContainer from "./Application/ApplicationContainer";
-import StepTable from "./Step/StepTable";
 import StepEditContainer from "./Step/StepEditContainer";
 import ProfileContainer from "./UserPage/ProfileContainer";
 import LoginRequiredRoute from "./LoginRequiredRoute";
+import AlertContainer from "./Notifications/AlertContainer";
+import ConfirmationContainer from "./Notifications/ConfirmationContainer"
 
 const HeaderLayout = () => (
   <>
+    <AlertContainer />
+    <ConfirmationContainer />
     <header>
       <NavigationBar />
     </header>

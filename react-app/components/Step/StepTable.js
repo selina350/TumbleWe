@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { getAllSteps, editStep, deleteStep } from "../../redux/model/stepSlice";
 import StepForm from "./StepForm";
+import { displayConfirmation } from "../../redux/controller/confirmationSlice";
 
 const StepTable = () => {
   const { id } = useParams();
@@ -31,7 +32,8 @@ const StepTable = () => {
     navigate(`/application/${id}/steps/${step.id}/edit`);
   };
   const handleDelete = (stepId) => {
-    dispatch(deleteStep(stepId));
+    dispatch(displayConfirmation({"message":"Are you sure about deleting this step?", "onConfirm":()=>{dispatch(deleteStep(stepId))}}))
+    
   };
   return (
     <div>

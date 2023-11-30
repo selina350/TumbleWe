@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createStep, editStep, getAllSteps } from "../../redux/model/stepSlice";
 import { useNavigate } from "react-router-dom";
-import { displayAlert } from "../../redux/controller/alert";
+import { displayAlert } from "../../redux/controller/alertSlice";
 
 const StepForm = ({ appId, stepId }) => {
   const step = useSelector((state) => state.model.steps[stepId]);
@@ -89,7 +88,7 @@ const StepForm = ({ appId, stepId }) => {
       dispatch(
         displayAlert(stepId !== undefined ? "Step Edited" : "Step Created")
       );
-      navigate(`/application/${appId}`);
+      navigate(`/application/${appId}/steps`);
       //    history.push(`/${restaurantId}/manage/items`);
     } else {
       // Handle errors - API call encountered validation errors or other issues
@@ -102,7 +101,7 @@ const StepForm = ({ appId, stepId }) => {
     setName("");
     setSelector("");
     setUrl("");
-    navigate(`/application/${appId}`);
+    navigate(`/application/${appId}/steps`);
   };
   return (
     <div className="page-container">

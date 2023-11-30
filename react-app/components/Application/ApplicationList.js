@@ -19,6 +19,7 @@ import {
   deleteApp,
   getAllApps,
 } from "../../redux/model/applicationSlice";
+import { displayConfirmation } from "../../redux/controller/confirmationSlice";
 
 const ApplicationList = ({ applications }) => {
   const navigate = useNavigate();
@@ -34,7 +35,14 @@ const ApplicationList = ({ applications }) => {
     setAnchorEl(null);
   };
   const handleDeleteApplication = async () => {
-    await dispatch(deleteApp(selectedId));
+    await dispatch(
+      displayConfirmation({
+        message: "Are you sure about deleting this app?",
+        onConfirm: () => {
+          dispatch(deleteApp(selectedId));
+        },
+      })
+    );
     setAnchorEl(null);
   };
   const handleSumbit = async (e) => {
