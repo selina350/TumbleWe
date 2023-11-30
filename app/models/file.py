@@ -11,7 +11,7 @@ class File(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     applicationId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod("applications.id")), nullable=False)
-    name = db.Column(db.String(60), nullable=False)
+    name = db.Column(db.String(60), nullable=False,)
     url = db.Column(db.String())
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

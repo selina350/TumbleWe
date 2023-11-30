@@ -30,14 +30,19 @@ def get_all_files(applicationId):
 def create_file(applicationId):
     form = FileForm()
     application = Application.query.filter(Application.id == applicationId).first()
+
     if not application:
         return {"application doesn't exist"},404
     if application.ownerId != current_user.id:
         return jsonify({"error": "Unauthorized"}), 403
+
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
         copy_s3_object(data["name"], applicationId)
+        existing_file = File.query.filter(File.name == data["name"]).first()
+        if existing_file:
+            return jsonify({"error": "file with this name already exists"}), 200
         new_file = File(
             applicationId=application.id,
             name=data["name"],

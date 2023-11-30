@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createStep, editStep, getAllSteps } from "../../redux/model/stepSlice";
 import { useNavigate } from "react-router-dom";
-import { displayAlert } from "../../redux/controller/alert";
+import { displayAlert } from "../../redux/controller/alertSlice";
 
 const StepForm = ({ appId, stepId }) => {
   const step = useSelector((state) => state.model.steps[stepId]);
@@ -23,7 +22,7 @@ const StepForm = ({ appId, stepId }) => {
   useEffect(() => {
     if (step !== undefined) {
       setName(step.name);
-      setUrl(step.url);
+      // setUrl(step.url);
       setSelector(step.selector);
       setType(step.type);
     }
@@ -31,7 +30,7 @@ const StepForm = ({ appId, stepId }) => {
 
   useEffect(() => {
     setIsSubmitDisabled(nameError || selectorError);
-  }, [name, url, selector, nameError, selectorError]);
+  }, [name, selector, nameError, selectorError]);
 
   useEffect(() => {
     if (step === undefined) {
@@ -75,21 +74,20 @@ const StepForm = ({ appId, stepId }) => {
           id: stepId,
           applicaitonId: appId,
           name,
-          url,
           selector,
           type,
         })
       );
     } else {
       //creation
-      errors = await dispatch(createStep(appId, name, url, selector, type));
+      errors = await dispatch(createStep(appId, name, selector, type));
     }
 
     if (!errors) {
       dispatch(
         displayAlert(stepId !== undefined ? "Step Edited" : "Step Created")
       );
-      navigate(`/application/${appId}`);
+      navigate(`/application/${appId}/steps`);
       //    history.push(`/${restaurantId}/manage/items`);
     } else {
       // Handle errors - API call encountered validation errors or other issues
@@ -101,8 +99,8 @@ const StepForm = ({ appId, stepId }) => {
   const cancelHandler = (e) => {
     setName("");
     setSelector("");
-    setUrl("");
-    navigate(`/application/${appId}`);
+    // setUrl("");
+    navigate(`/application/${appId}/steps`);
   };
   return (
     <div className="page-container">
@@ -128,7 +126,7 @@ const StepForm = ({ appId, stepId }) => {
                 {nameError !== null && <div className="error">{nameError}</div>}
               </td>
             </tr>
-            <tr>
+            {/* <tr>
               <td>
                 <label>Url</label>
               </td>
@@ -141,7 +139,7 @@ const StepForm = ({ appId, stepId }) => {
                   }}
                 />
               </td>
-            </tr>
+            </tr> */}
             <tr>
               <td>
                 <label>Type</label>

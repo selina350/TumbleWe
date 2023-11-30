@@ -6,17 +6,15 @@ import {
   editUser,
   deleteUser,
 } from "../../redux/controller/userSlice";
-
+import { displayAlert } from "../../redux/controller/alertSlice";
+import { displayConfirmation } from "../../redux/controller/confirmationSlice";
 function EditUserForm({ user }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
-  const [usernameError, setUsernameError] = useState(null);
   const [oldPassword, setOldPassword] = useState("");
-  const [oldPasswordError, setOldPasswordError] = useState(null);
   const [newPassword, setNewPassword] = useState("");
-  const [newPasswordError, setNewPasswordError] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
@@ -26,17 +24,18 @@ function EditUserForm({ user }) {
     }
   }, [user]);
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword === confirmPassword && newPassword.length > 5) {
-
-      const error = await dispatch(editUser(username, oldPassword, newPassword));
+      const error = await dispatch(
+        editUser(username, oldPassword, newPassword)
+      );
       if (error) {
         console.log(error);
         setErrors(error);
       } else {
         navigate("/");
+        dispatch(displayAlert("User updated sucessfully!"));
       }
     } else if (newPassword.length < 6) {
       setErrors({ newPassword: "Password must be 6 characters or more" });
@@ -46,6 +45,18 @@ function EditUserForm({ user }) {
           "Confirm Password must be the same as the new password above",
       });
     }
+  };
+
+  const handleDelete = async () => {
+    await dispatch(
+      displayConfirmation({
+        message: "Are you sure to sign out?",
+        onConfirm: () => {
+          dispatch(deleteUser());
+        },
+      }))
+    navigate("/");
+    dispatch(displayAlert("User deleted sucessfully!"));
   };
 
   return (
@@ -112,6 +123,11 @@ function EditUserForm({ user }) {
                 </button>
               </div>
             </form>
+            <div>
+              <button className="signup-login-button" onClick={handleDelete}>
+                Delete the account
+              </button>
+            </div>
           </div>
         </div>
       </div>
