@@ -26,11 +26,10 @@ export const getAllSteps = (appId) => async (dispatch) => {
 };
 
 export const createStep =
-  (appId, name, url, selector, type) => async (dispatch) => {
+  (appId, name, selector, type) => async (dispatch) => {
     try {
       const response = await axios.post(`/api/applications/${appId}/steps`, {
         name,
-        url,
         selector,
         type,
       });
