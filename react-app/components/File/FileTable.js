@@ -55,27 +55,7 @@ const FileTable = () => {
               {/*<TableCell align="right">{row.type}</TableCell>*/}
             </TableRow>
           ))}
-          {/* <TableBody>
-              <OpenModalButton
-                modalComponent={() => (
-                  <div>
-                    <h3>Are you sure to delete {item.name} from your menu? </h3>
-                    <button
-                      className="primary"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Yes
-                    </button>
-                    <button onClick={closeModal}>No</button>
-                  </div>
-                )}
-                buttonText={
-                  <div>
-                    <i className="fa-solid fa-trash" /> Delete
-                  </div>
-                }
-              />
-              </TableBody> */}
+
         </TableBody>
       )}
     </Table>
