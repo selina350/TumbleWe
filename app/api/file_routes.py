@@ -5,6 +5,7 @@ from app.forms import FileForm
 from flask_login import current_user, login_required
 from app.utils.validate_errors import validation_errors_to_error_messages
 from app.utils.s3_helper import delete_s3_object, copy_s3_object
+from sqlalchemy import and_
 
 file_routes = Blueprint('files', __name__)
 
@@ -40,9 +41,10 @@ def create_file(applicationId):
     if form.validate_on_submit():
         data = form.data
         copy_s3_object(data["name"], applicationId)
-        existing_file = File.query.filter(File.name == data["name"]).first()
+        existing_file = File.query.filter(and_(File.name == data["name"], File.applicationId == applicationId)).first()
+
         if existing_file:
-            return jsonify({"error": "file with this name already exists"}), 200
+            return jsonify({"message": "file with this name has been replaced"}), 200
         new_file = File(
             applicationId=application.id,
             name=data["name"],

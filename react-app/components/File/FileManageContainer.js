@@ -6,19 +6,22 @@ import { uploadFileToS3 } from "../../utils/FileUploadHelper";
 import { useDispatch } from "react-redux";
 import { createFile } from "../../redux/model/fileSlice";
 import { useParams } from "react-router-dom";
-
+import { displayAlert } from "../../redux/controller/alertSlice";
 const FileManageContainer = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const uploadFileInputRef = useRef();
 
+
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     const fileName = file.name;
     const fileUrl = file.url
-    console.log(fileName);
     await uploadFileToS3(file, id);
-    dispatch(createFile(id, fileName, fileUrl));
+    const {message} = await dispatch(createFile(id, fileName, fileUrl));
+    if(message){
+      dispatch(displayAlert(message))
+    }
     e.target.value = null;
   };
   const handleFileUpload = async () => {
@@ -42,6 +45,7 @@ const FileManageContainer = () => {
               ref={uploadFileInputRef}
               style={{ display: "none" }}
             />
+          
           </Grid>
           {/*<Grid item>*/}
           {/*  <Button variant="outlined" startIcon={<FolderIcon/>}>Create Folder</Button>*/}
