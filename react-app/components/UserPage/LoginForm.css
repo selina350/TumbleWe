@@ -15,7 +15,8 @@
   flex-direction: column;
   gap: 16px;
   flex-grow: 1;
-  width: 314px;
+  max-width: 314px;
+  min-width: 314px;
 }
 .form-wrapper input,
 select,
