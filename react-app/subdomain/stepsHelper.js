@@ -14,8 +14,20 @@ export const performSteps = async (steps) => {
         input.dispatchEvent(new Event("input", { bubbles: true }));
         break;
       case "buttonClick":
-        const button = document.querySelector(step?.selector);
-        button.click();
+        const buttons = document.querySelectorAll(step?.selector);
+        let buttonToClick;
+        if (step?.innerHTML) {
+          buttons.forEach((btn) => {
+            if (btn.innerHTML === step?.innerHTML) {
+              buttonToClick = btn;
+            }
+          });
+        } else {
+          buttonToClick = buttons[0];
+        }
+        if (buttonToClick) {
+          buttonToClick.click();
+        }
         break;
       default:
         console.error("unexpected step type - " + step.type);
