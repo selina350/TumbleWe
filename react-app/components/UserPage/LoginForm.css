@@ -5,6 +5,11 @@
   margin-top: 16px;
 }
 
+.form-wrapper > div {
+  display: flex;
+  justify-content: center;
+}
+
 .login-form-container .form-wrapper {
   display: flex;
   flex-direction: column;

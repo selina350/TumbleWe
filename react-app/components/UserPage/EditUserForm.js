@@ -47,91 +47,89 @@ function EditUserForm({ user }) {
     }
   };
 
-  const handleDelete = async () => {
-    await dispatch(
+  const handleDelete = () => {
+    dispatch(
       displayConfirmation({
         message: "Are you sure to sign out?",
-        onConfirm: () => {
-          dispatch(deleteUser());
+        onConfirm: async () => {
+          await dispatch(deleteUser());
+          dispatch(displayAlert("User deleted sucessfully!"));
+          navigate("/");
         },
-      }))
-    navigate("/");
-    dispatch(displayAlert("User deleted sucessfully!"));
+      })
+    );
   };
 
   return (
-    <>
-      <div className="page-container">
-        <div className="login-form-container">
-          <div className=" form-wrapper">
-            <form className="login-form" onSubmit={handleSubmit}>
-              <div>
-                <h1>Edit User</h1>
-              </div>
-
-              <div className="login-form-input-container">
-                <label>Username</label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-                {errors?.username && (
-                  <div className="error-msg">{errors.username}</div>
-                )}
-              </div>
-              <div className="login-form-input-container">
-                <label>Old Password</label>
-                <input
-                  type="password"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                  required
-                />
-                {errors?.oldPassword && (
-                  <div className="error-msg">{errors.oldPassword}</div>
-                )}
-              </div>
-              <div className="login-form-input-container">
-                <label>New Password</label>
-                <input
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  required
-                />
-                {errors?.newPassword && (
-                  <div className="error-msg">{errors.newPassword}</div>
-                )}
-              </div>
-              <div className="login-form-input-container">
-                <label>Confirm New Password</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                />
-                {errors?.confirmPassword && (
-                  <div className="error-msg">{errors.confirmPassword}</div>
-                )}
-              </div>
-              <div>
-                <button className="signup-login-button" type="submit">
-                  Submit
-                </button>
-              </div>
-            </form>
+    <div className="page-container">
+      <div className="login-form-container">
+        <div className="form-wrapper">
+          <div>
+            <h1>Edit User</h1>
+          </div>
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="login-form-input-container">
+              <label>Username</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+              {errors?.username && (
+                <div className="error-msg">{errors.username}</div>
+              )}
+            </div>
+            <div className="login-form-input-container">
+              <label>Old Password</label>
+              <input
+                type="password"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                required
+              />
+              {errors?.oldPassword && (
+                <div className="error-msg">{errors.oldPassword}</div>
+              )}
+            </div>
+            <div className="login-form-input-container">
+              <label>New Password</label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              {errors?.newPassword && (
+                <div className="error-msg">{errors.newPassword}</div>
+              )}
+            </div>
+            <div className="login-form-input-container">
+              <label>Confirm New Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
+              {errors?.confirmPassword && (
+                <div className="error-msg">{errors.confirmPassword}</div>
+              )}
+            </div>
             <div>
-              <button className="signup-login-button" onClick={handleDelete}>
-                Delete the account
+              <button className="signup-login-button" type="submit">
+                Submit
               </button>
             </div>
+          </form>
+          <div>
+            <a href="javascript:void(0);" onClick={handleDelete}>
+              Delete the account
+            </a>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

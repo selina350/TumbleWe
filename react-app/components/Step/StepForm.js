@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { createStep, editStep, getAllSteps } from "../../redux/model/stepSlice";
 import { useNavigate } from "react-router-dom";
 import { displayAlert } from "../../redux/controller/alertSlice";
+import { IconButton, Tooltip } from "@mui/material";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 const StepForm = ({ appId, stepId }) => {
   const step = useSelector((state) => state.model.steps[stepId]);
 
   const [name, setName] = useState(step?.name || "");
   const [nameError, setNameError] = useState(null);
-  const [url, setUrl] = useState(step?.url || "");
+  // const [url, setUrl] = useState(step?.url || "");
   const [selector, setSelector] = useState(step?.selector || "");
   const [selectorError, setSelectorError] = useState(null);
   const [innerHTML, setInnerHTML] = useState(step?.innerHTML || "");
@@ -18,7 +20,7 @@ const StepForm = ({ appId, stepId }) => {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  //   const history = useHistory();
+
   const typeList = ["input", "buttonClick"];
 
   useEffect(() => {
@@ -91,8 +93,11 @@ const StepForm = ({ appId, stepId }) => {
       dispatch(
         displayAlert(stepId !== undefined ? "Step Edited" : "Step Created")
       );
+      setName("");
+      setSelector("");
+      setInnerHTML(null);
+      setType("input");
       navigate(`/application/${appId}/steps`);
-      //    history.push(`/${restaurantId}/manage/items`);
     } else {
       // Handle errors - API call encountered validation errors or other issues
       console.error("Error creating step:", errors);
@@ -110,8 +115,17 @@ const StepForm = ({ appId, stepId }) => {
     <div className="page-container">
       <div className="login-form-container">
         <div className=" form-wrapper">
-          {stepId === undefined && <h1>Create New Step</h1>}
-          {stepId !== undefined && <h1>Edit Step</h1>}
+          <h1>
+            {stepId === undefined ? "Create New Step" : "Edit Step"}
+            <Tooltip
+              title="Steps will be the events performed on your web application after loaded. Selector helps to find the html element in your web application. Selector has the same syntax as css selector."
+              arrow
+            >
+              <IconButton color="primary" disableRipple>
+                <HelpOutlineIcon />
+              </IconButton>
+            </Tooltip>
+          </h1>
           <table>
             <tr>
               <td>
@@ -127,7 +141,9 @@ const StepForm = ({ appId, stepId }) => {
                     nameInputValidation(e.target.value);
                   }}
                 />
-                {nameError !== null && <div className="error">{nameError}</div>}
+                {nameError !== null && (
+                  <div className="error-msg">{nameError}</div>
+                )}
               </td>
             </tr>
             {/* <tr>
@@ -178,7 +194,7 @@ const StepForm = ({ appId, stepId }) => {
                   }}
                 />
                 {selectorError !== null && (
-                  <div className="error">{selectorError}</div>
+                  <div className="error-msg">{selectorError}</div>
                 )}
               </td>
             </tr>
@@ -194,6 +210,7 @@ const StepForm = ({ appId, stepId }) => {
                     setInnerHTML(e.target.value);
                   }}
                 />
+                (optional)
               </td>
             </tr>
           </table>
