@@ -12,6 +12,8 @@ const StepForm = ({ appId, stepId }) => {
   const [url, setUrl] = useState(step?.url || "");
   const [selector, setSelector] = useState(step?.selector || "");
   const [selectorError, setSelectorError] = useState(null);
+  const [innerHTML, setInnerHTML] = useState(step?.innerHTML || "");
+  const [innerHTMLError, setInnerHTMLError] = useState(null);
   const [type, setType] = useState(step?.type || "input");
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const dispatch = useDispatch();
@@ -80,7 +82,9 @@ const StepForm = ({ appId, stepId }) => {
       );
     } else {
       //creation
-      errors = await dispatch(createStep(appId, name, selector, type));
+      errors = await dispatch(
+        createStep(appId, name, selector, type, innerHTML)
+      );
     }
 
     if (!errors) {
@@ -176,6 +180,20 @@ const StepForm = ({ appId, stepId }) => {
                 {selectorError !== null && (
                   <div className="error">{selectorError}</div>
                 )}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>innerHTML</label>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  value={innerHTML}
+                  onChange={(e) => {
+                    setInnerHTML(e.target.value);
+                  }}
+                />
               </td>
             </tr>
           </table>

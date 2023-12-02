@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, URLField, SelectField
-from wtforms.validators import DataRequired, Length, NumberRange, ValidationError
+from wtforms import StringField, SelectField
+from wtforms.validators import DataRequired, Length, ValidationError
 
 def validateName(form, field):
   name = field.data
@@ -30,3 +30,4 @@ class StepForm(FlaskForm):
   selector =StringField('selector', validators=[DataRequired(), validateSelector])
   url = StringField('url', validators=[Length(max=200)])
   type = SelectField("type", choices=["input", "buttonClick"], validators=[DataRequired(),validateType])
+  innerHTML = StringField('url', validators=[Length(max=200)])

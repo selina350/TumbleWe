@@ -42,7 +42,8 @@ def create_step(applicationId):
             name=data["name"],
             url=data["url"],
             selector=data["selector"],
-            type=data["type"]
+            type=data["type"],
+            innerHTML=data["innerHTML"]
         )
 
         db.session.add(new_step)
@@ -71,6 +72,8 @@ def edit_step(stepId):
         step.url=data["url"]
         step.selector=data["selector"]
         step.type=data["type"]
+        step.innerHTML=data["innerHTML"]
+
         db.session.commit()
         return step.to_dict()
     else:
