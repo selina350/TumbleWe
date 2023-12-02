@@ -11,6 +11,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import { getAllFiles, editFile, deleteFile } from "../../redux/model/fileSlice";
+import { displayAlert } from "../../redux/controller/alertSlice";
 import { displayConfirmation } from "../../redux/controller/confirmationSlice";
 const FileTable = () => {
   const { id } = useParams();
@@ -27,7 +28,15 @@ const FileTable = () => {
   }, [dispatch]);
 
   const handleDelete = (FileId) => {
-    dispatch(displayConfirmation({"message":"Are you sure about deleting this file?", "onConfirm":()=>{dispatch(deleteFile(FileId))}}))
+    dispatch(
+      displayConfirmation({
+        message: "Are you sure about deleting this file?",
+        onConfirm: async() => {
+          await dispatch(deleteFile(FileId));
+          dispatch(displayAlert("This file has been deleted sucessfully!"));
+        },
+      })
+    );
   };
   return (
     <Table sx={{ minWidth: 650 }}>
@@ -55,7 +64,6 @@ const FileTable = () => {
               {/*<TableCell align="right">{row.type}</TableCell>*/}
             </TableRow>
           ))}
-
         </TableBody>
       )}
     </Table>

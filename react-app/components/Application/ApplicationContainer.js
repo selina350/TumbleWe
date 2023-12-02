@@ -9,6 +9,7 @@ import {
   Tab,
   Tabs,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +18,10 @@ import {
   createApp,
   editApp,
 } from "../../redux/model/applicationSlice";
-
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FileManageContainer from "../File/FileManageContainer";
 import PublicIcon from "@mui/icons-material/Public";
 import EditIcon from "@mui/icons-material/Edit";
-import { Visibility } from "@mui/icons-material";
 import StepTable from "../Step/StepTable";
 
 const ApplicationContainer = ({ tab }) => {
@@ -87,6 +87,14 @@ const ApplicationContainer = ({ tab }) => {
               <Typography variant="overline" textTransform="uppercase">
                 Application
               </Typography>
+              <Tooltip
+                title="This application means your web app. You can view it by click the link below. Upload Files to support your application e.g. index.html. Steps are the user events simulated on your web app once it's loaded."
+                arrow
+              >
+                <IconButton color="primary" disableRipple>
+                  <HelpOutlineIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
           {!isEditingName && (
