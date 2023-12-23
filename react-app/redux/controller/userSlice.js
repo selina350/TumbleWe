@@ -145,6 +145,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { fetchUserRequest, fetchUserSuccess, logoutSuccess } =
-  userSlice.actions;
+const { fetchUserRequest, fetchUserSuccess, logoutSuccess } = userSlice.actions;
 export default userSlice.reducer;

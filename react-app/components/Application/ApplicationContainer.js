@@ -131,7 +131,7 @@ const ApplicationContainer = ({ tab }) => {
                   autoFocus
                 />
               </ClickAwayListener>
-              {nameError !== null && <div className="error">{nameError}</div>}
+              {nameError !== null && <div className="error-msg">{nameError}</div>}
             </Grid>
           )}
           <Grid item>

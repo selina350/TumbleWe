@@ -87,7 +87,7 @@ function LoginFormPage() {
                 Demo User Log In
               </button>
             </div>
-            <h3>New to Selina's website?</h3>
+            <h3>New to TumbleWe?</h3>
             <div>
               <button
                 className="signup-login-button"

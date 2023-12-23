@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify, session, request
 from app.models import Step, db, Application
-from app.forms import StepForm
+from app.forms import StepForm, StepOrderListForm
 
 from flask_login import current_user, login_required
 from app.utils.validate_errors import validation_errors_to_error_messages
 from app.utils.subdomain_helper import extract_subdomain
+from wtforms import ValidationError
 
 step_routes = Blueprint('steps', __name__)
 
@@ -43,7 +44,8 @@ def create_step(applicationId):
             url=data["url"],
             selector=data["selector"],
             type=data["type"],
-            innerHTML=data["innerHTML"]
+            innerHTML=data["innerHTML"],
+            order=data["order"]
         )
 
         db.session.add(new_step)
@@ -51,6 +53,37 @@ def create_step(applicationId):
         return new_step.to_dict()
     else:
         return {'errors': validation_errors_to_error_messages(form.errors)}, 401
+
+#change order of all steps by appId
+@step_routes.route('/applications/<int:applicationId>/steps/order', methods=['PUT'])
+@login_required
+def change_steps_order(applicationId):
+    json_data = request.get_json()
+    form = StepOrderListForm()
+    form['csrf_token'].data = request.cookies['csrf_token']
+    application = Application.query.filter(Application.id == applicationId).first()
+    if not application:
+        return {"error":"application doesn't exist"}, 404
+    if application.ownerId != current_user.id:
+      return jsonify({"error": "Unauthorized"}), 403
+    try:
+        if form.validate_on_submit():
+            print("order obj", json_data)
+            for item in json_data:
+                print("id", item['id'], "order", item['order'])
+                step = Step.query.filter(Step.id == item['id']).first()
+                if not step:
+                    return {'error': 'One of the Step is not found'}, 404
+                step.order = item['order']
+            db.session.commit()
+            return jsonify("Success"), 200
+
+        else:
+            errors = form.errors
+            return jsonify({"errors": errors}), 400
+    except ValidationError as e:
+        # Handle validation errors
+        return jsonify({"error": str(e)}), 400
 
 
 #edit an exiting step

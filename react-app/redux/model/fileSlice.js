@@ -123,5 +123,5 @@ const fileSlice = createSlice({
   },
 });
 
-export const { fetchFileSuccess, deleteFileSuccess } = fileSlice.actions;
+const { fetchFileSuccess, deleteFileSuccess } = fileSlice.actions;
 export default fileSlice.reducer;
