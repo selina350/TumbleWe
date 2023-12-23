@@ -27,7 +27,16 @@ export const getAllSteps = (appId) => async (dispatch) => {
 };
 
 export const createStep =
-  (appId, name, selector, type, innerHTML) => async (dispatch) => {
+  (appId, name, selector, type, innerHTML) => async (dispatch, getState) => {
+    const steps = Object.values(getState().model.steps).filter((value) => {
+      return typeof value !== "boolean" && value.applicationId + "" === appId;
+    });
+    const sortedSteps = sortSteps(steps);
+    //calculate the order of this newly created step
+    const order = Math.max(
+      sortedSteps.length + 1,
+      sortedSteps.pop()?.order || 0 + 1
+    );
     try {
       const response = await axios.post(`/api/applications/${appId}/steps`, {
         name,
