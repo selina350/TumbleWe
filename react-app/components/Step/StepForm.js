@@ -80,6 +80,7 @@ const StepForm = ({ appId, stepId }) => {
           name,
           selector,
           type,
+          innerHTML,
         })
       );
     } else {
