@@ -33,7 +33,10 @@ export const createStep =
     });
     const sortedSteps = sortSteps(steps);
     //calculate the order of this newly created step
-    const order = Math.max(sortedSteps.length, sortedSteps.pop()?.order + 1);
+    const order = Math.max(
+      sortedSteps.length + 1,
+      sortedSteps.pop()?.order || 0 + 1
+    );
     try {
       const response = await axios.post(`/api/applications/${appId}/steps`, {
         name,
