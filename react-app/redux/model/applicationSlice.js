@@ -117,6 +117,6 @@ const applicationSlice = createSlice({
   },
 });
 
-export const { fetchApplicationSuccess, deleteApplicationSuccess } =
+const { fetchApplicationSuccess, deleteApplicationSuccess } =
   applicationSlice.actions;
 export default applicationSlice.reducer;

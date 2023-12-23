@@ -15,6 +15,7 @@ class Step(db.Model):
     url = db.Column(db.String())
     innerHTML = db.Column(db.String())
     type = db.Column(db.String(50),nullable=False)
+    order = db.Column(db.Integer())
     selector = db.Column(db.String(), nullable=False)
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -30,5 +31,6 @@ class Step(db.Model):
             "selector": self.selector,
             "url": self.url,
             "type":self.type,
-            "innerHTML": self.innerHTML
+            "innerHTML": self.innerHTML,
+            "order":self.order
         }

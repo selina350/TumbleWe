@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField
+from wtforms import StringField, SelectField, IntegerField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 def validateName(form, field):
@@ -26,8 +26,9 @@ def validateType(form,field):
 
 class StepForm(FlaskForm):
   name = StringField('name', validators=[DataRequired(), Length(max=50), validateName])
-  # url = URLField('url', validators=[validateImage])
+  #url = URLField('url', validators=[validateImage])
   selector =StringField('selector', validators=[DataRequired(), validateSelector])
   url = StringField('url', validators=[Length(max=200)])
   type = SelectField("type", choices=["input", "buttonClick"], validators=[DataRequired(),validateType])
   innerHTML = StringField('url', validators=[Length(max=200)])
+  order = IntegerField('order')

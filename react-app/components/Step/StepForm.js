@@ -95,7 +95,7 @@ const StepForm = ({ appId, stepId }) => {
       );
       setName("");
       setSelector("");
-      setInnerHTML(null);
+      setInnerHTML("");
       setType("input");
       navigate(`/application/${appId}/steps`);
     } else {
