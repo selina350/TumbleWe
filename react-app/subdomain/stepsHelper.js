@@ -10,7 +10,11 @@ export const performSteps = async (steps) => {
       case "input":
         const input = document.querySelector(step?.selector);
         input.focus();
-        input.setAttribute("value", step?.name);
+        var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype,
+          "value"
+        ).set;
+        nativeInputValueSetter.call(input, step?.name);
         input.dispatchEvent(new Event("input", { bubbles: true }));
         break;
       case "buttonClick":
