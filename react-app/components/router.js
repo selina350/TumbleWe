@@ -15,7 +15,8 @@ import StepEditContainer from "./Step/StepEditContainer";
 import ProfileContainer from "./UserPage/ProfileContainer";
 import LoginRequiredRoute from "./LoginRequiredRoute";
 import AlertContainer from "./Notifications/AlertContainer";
-import ConfirmationContainer from "./Notifications/ConfirmationContainer"
+import ConfirmationContainer from "./Notifications/ConfirmationContainer";
+import FooterContent from "./FooterContent";
 
 const HeaderLayout = () => (
   <>
@@ -24,9 +25,12 @@ const HeaderLayout = () => (
     <header>
       <NavigationBar />
     </header>
-    <Box sx={{ height: "calc(100vh - 64px)" }}>
+    <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Outlet />
     </Box>
+    <footer>
+      <FooterContent />
+    </footer>
   </>
 );
 
