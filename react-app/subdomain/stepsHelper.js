@@ -10,7 +10,7 @@ export const performSteps = async (steps) => {
       case "input":
         const input = document.querySelector(step?.selector);
         input.focus();
-        var nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
           window.HTMLInputElement.prototype,
           "value"
         ).set;
