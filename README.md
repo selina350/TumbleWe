@@ -18,15 +18,13 @@ TumbleWe is an original application that allowers users to automatically operate
 
 # Index
 
-[Feature List](https://github.com/selina350/TestTestProject/wiki/Feature-List) | [Database Schema](https://github.com/selina350/TestTestProject/wiki/Database-schema) | [User Stories](https://github.com/kyleseeley/NomNomRide/wiki/User-Stories) | [BackendRoutes](https://github.com/kyleseeley/NomNomRide/wiki/Backend-Routes) | [FrontendRoutes](https://github.com/kyleseeley/NomNomRide/wiki/Frontend-Routes)
+[Feature List](https://github.com/selina350/TestTestProject/wiki/Feature-List) | [Database Schema](https://github.com/selina350/TestTestProject/wiki/Database-schema) | [User Stories](https://github.com/selina350/TestTestProject/wiki/User-Story) | [Rest API](https://github.com/selina350/TestTestProject/wiki/REST-API) | [FrontendRoutes](https://github.com/selina350/TestTestProject/wiki/Front-End-Routes)
 
 # Landing Page
 
 ![e6f3875d-c94a-4dff-bccc-c821883f64c5](https://github.com/kyleseeley/NomNomRide/assets/109104101/73bb5318-394d-468b-bf3e-1407e46744c1)
  
- # Place Order
 
- ![f1562440-ad94-424e-86ca-593795922ab7](https://github.com/kyleseeley/NomNomRide/assets/109104101/a38741c5-962c-426b-b2fb-69734c9742d6)
  
 
 
@@ -34,8 +32,9 @@ TumbleWe is an original application that allowers users to automatically operate
 
 # Future Implementation Goals
 
-1. Implement Googlemap API
-2. Stripe payment APi
+1. Instead of letting user config steps on the table view, the steps could be automatically recorded by user's operation.
+   
+
 
 
 
