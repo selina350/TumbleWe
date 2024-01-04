@@ -20,12 +20,14 @@ TumbleWe is an original application that allowers users to automatically operate
 
 [Feature List](https://github.com/selina350/TestTestProject/wiki/Feature-List) | [Database Schema](https://github.com/selina350/TestTestProject/wiki/Database-schema) | [User Stories](https://github.com/selina350/TestTestProject/wiki/User-Story) | [Rest API](https://github.com/selina350/TestTestProject/wiki/REST-API) | [FrontendRoutes](https://github.com/selina350/TestTestProject/wiki/Front-End-Routes)
 
-# Landing Page
-
-![e6f3875d-c94a-4dff-bccc-c821883f64c5](https://github.com/kyleseeley/NomNomRide/assets/109104101/73bb5318-394d-468b-bf3e-1407e46744c1)
+# Upload File
  
+![9eb03889-3b68-470f-b920-ac974f8882d1](https://github.com/selina350/TestTestProject/assets/109104101/9ba9013c-b34f-4329-86cb-8e1ed0e433d6)
 
+
+# Run on Subdomain
  
+![21dbba6a-8723-4936-8797-0814a527a179](https://github.com/selina350/TestTestProject/assets/109104101/cbc05040-d188-4188-81eb-5baea56366c8)
 
 
 
