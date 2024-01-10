@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { sortSteps } from "../../utils/stepHelper";
+import request from "../request";
 
 //action creation by thunk
 export const getAllSteps = (appId) => async (dispatch) => {

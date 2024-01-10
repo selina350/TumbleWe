@@ -22,6 +22,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FileManageContainer from "../File/FileManageContainer";
 import PublicIcon from "@mui/icons-material/Public";
 import EditIcon from "@mui/icons-material/Edit";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import StepTable from "../Step/StepTable";
 
 const ApplicationContainer = ({ tab }) => {
@@ -131,11 +132,21 @@ const ApplicationContainer = ({ tab }) => {
                   autoFocus
                 />
               </ClickAwayListener>
-              {nameError !== null && <div className="error-msg">{nameError}</div>}
+              {nameError !== null && (
+                <div className="error-msg">{nameError}</div>
+              )}
             </Grid>
           )}
           <Grid item>
             <a href={`//${viewAppUrl}`}>{viewAppUrl}</a>
+            <IconButton
+              size="small"
+              href={`//${viewAppUrl}`}
+              color="primary"
+              target="_blank"
+            >
+              <OpenInNewIcon />
+            </IconButton>
           </Grid>
         </Grid>
         <Grid item>

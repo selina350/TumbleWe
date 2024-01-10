@@ -10,7 +10,7 @@ const isMockAPIEnabled = process.env.MOCK_API === "true";
 module.exports = {
   mode: "development",
   entry: {
-    subdomain: "./subdomain/index.js",
+    subdomain: ["./subdomain/index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
     main: ["./index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
   },
   output: {
