@@ -5,7 +5,7 @@ const sleep = (ms) => {
 export const performSteps = async (steps) => {
   for (const step of steps) {
     await sleep(1000);
-    console.log(JSON.stringify(step));
+   
     switch (step?.type) {
       case "input":
         const input = document.querySelector(step?.selector);

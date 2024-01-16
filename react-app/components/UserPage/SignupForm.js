@@ -29,7 +29,7 @@ function SignupFormPage() {
         username, password
       ));
       if (data) {
-        console.log(data)
+      
         setErrors(data);
       }
     } else if (password.length < 6) {

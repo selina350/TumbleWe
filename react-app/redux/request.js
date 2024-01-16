@@ -7,7 +7,6 @@ const instance = axios.create({
 instance.interceptors.response.use(response => {
   return response
 }, error => {
-  console.log('API general error handling', error)
   return Promise.reject(error)
 })
 

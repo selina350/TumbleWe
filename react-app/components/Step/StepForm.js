@@ -44,7 +44,7 @@ const StepForm = ({ appId, stepId }) => {
 
   const nameInputValidation = (checkName) => {
     if (checkName === undefined || checkName.length === 0) {
-      console.log("test", nameError);
+
       setNameError("Name is required.");
     } else if (checkName.length > 255) {
       setNameError("Name is too long.");
@@ -137,7 +137,7 @@ const StepForm = ({ appId, stepId }) => {
                   type="text"
                   value={name}
                   onChange={(e) => {
-                    console.log(nameError);
+             
                     setName(e.target.value);
                     nameInputValidation(e.target.value);
                   }}

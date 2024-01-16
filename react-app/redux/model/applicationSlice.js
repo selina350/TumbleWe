@@ -9,7 +9,7 @@ export const getAllApps = () => async (dispatch) => {
     const { data } = response;
     dispatch(fetchApplicationSuccess(data.applications));
   } catch (e) {
-    console.log(e);
+
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
@@ -29,7 +29,7 @@ export const createApp = () => async (dispatch) => {
       name,
     });
     const { data } = response;
-    console.log(data);
+
     dispatch(fetchApplicationSuccess([data]));
     return data;
   } catch (e) {
