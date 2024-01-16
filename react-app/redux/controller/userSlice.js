@@ -20,7 +20,7 @@ export const login = (email, password) => async (dispatch) => {
     const { data } = response;
     dispatch(fetchUserSuccess(data));
   } catch (e) {
-    console.log(e);
+
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
@@ -103,7 +103,7 @@ export const deleteUser = () => async (dispatch) => {
     const response = await axios.delete("/api/users/me");
     dispatch(logoutSuccess());
   } catch (e) {
-    console.log(e);
+   
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;

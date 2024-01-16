@@ -31,7 +31,7 @@ function EditUserForm({ user }) {
         editUser(username, oldPassword, newPassword)
       );
       if (error) {
-        console.log(error);
+      
         setErrors(error);
       } else {
         navigate("/");

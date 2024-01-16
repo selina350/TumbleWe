@@ -22,7 +22,6 @@ function LoginFormPage() {
     e.preventDefault();
     const data = await dispatch(login(email, password));
     if (data) {
-      console.log(data);
       setErrors(data);
     }
   };
@@ -31,7 +30,6 @@ function LoginFormPage() {
 
     dispatch(login("demo@aa.io", "password")).catch(async (res) => {
       const data = await res.json();
-      console.log(data);
       if (data && data.errors) setErrors(data.errors);
     });
   };

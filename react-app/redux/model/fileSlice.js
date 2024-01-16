@@ -12,7 +12,7 @@ export const getAllFiles = (appId) => async (dispatch) => {
     }, {});
     dispatch(fetchFileSuccess(data.files));
   } catch (e) {
-    console.log(e);
+
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
@@ -32,7 +32,7 @@ export const createFile = (appId, name, url) => async (dispatch) => {
       url,
     });
     const { data } = response;
-    console.log(data);
+
     dispatch(fetchFileSuccess([data]));
     return data;
   } catch (e) {
@@ -61,7 +61,7 @@ export const editFile = (file, name, url) => async (dispatch) => {
       url,
     });
     const { data } = response;
-    console.log(data);
+   
     dispatch(fetchFileSuccess([data]));
     return data;
   } catch (e) {

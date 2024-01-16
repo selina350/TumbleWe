@@ -14,7 +14,6 @@ export const getAllSteps = (appId) => async (dispatch) => {
     }, {});
     dispatch(fetchStepSuccess(data.steps));
   } catch (e) {
-    console.log(e);
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
@@ -47,7 +46,7 @@ export const createStep =
         order,
       });
       const { data } = response;
-      console.log(data);
+
       dispatch(fetchStepSuccess([data]));
     } catch (e) {
       const { response } = e;
@@ -145,14 +144,6 @@ export const changeStepOrder =
         payload.map((step) => ({ id: step.id, order: step.order }))
       );
       const { data } = response;
-      console.log(
-        "called api: PUT /applications/:id/steps/order payload:",
-        payload.map(
-          (step) => ({ id: step.id, order: step.order }),
-          "data",
-          data
-        )
-      );
     } catch (e) {}
 
     dispatch(fetchStepSuccess(payload));

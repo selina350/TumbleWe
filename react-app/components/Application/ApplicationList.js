@@ -36,10 +36,10 @@ const ApplicationList = ({ applications }) => {
     setAnchorEl(null);
   };
   const handleDeleteApplication = () => {
-     dispatch(
+    dispatch(
       displayConfirmation({
         message: "Are you sure about deleting this app?",
-        onConfirm: async() => {
+        onConfirm: async () => {
           await dispatch(deleteApp(selectedId));
           dispatch(displayAlert("This app has been deleted sucessfully!"));
         },
@@ -49,12 +49,9 @@ const ApplicationList = ({ applications }) => {
   };
   const handleSumbit = async (e) => {
     e.preventDefault();
-    try {
-      const data = await dispatch(createApp());
-      navigate(`/application/${data.id}`);
-    } catch (errors) {
-      console.log(errors);
-    }
+
+    const data = await dispatch(createApp());
+    navigate(`/application/${data.id}`);
   };
 
   return (

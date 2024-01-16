@@ -12,9 +12,7 @@ export const getSubdomainFromBrowser = () => {
     const subdomain = hostnameParts[0];
 
     return subdomain;
-  } else {
-    console.log("No subdomain found.");
-  }
+  } 
 };
 
 export const getHostReplacedSubdomainWith = (subdomain) => {
