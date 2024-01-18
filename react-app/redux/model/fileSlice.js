@@ -12,7 +12,6 @@ export const getAllFiles = (appId) => async (dispatch) => {
     }, {});
     dispatch(fetchFileSuccess(data.files));
   } catch (e) {
-
     const { response } = e;
     if (response.status < 500) {
       const { data } = response;
@@ -61,7 +60,7 @@ export const editFile = (file, name, url) => async (dispatch) => {
       url,
     });
     const { data } = response;
-   
+
     dispatch(fetchFileSuccess([data]));
     return data;
   } catch (e) {
@@ -111,10 +110,18 @@ const fileSlice = createSlice({
   name: "file",
   initialState: { fetchPending: true },
   reducers: {
+    createFilePending(state, action) {
+      state[action.payload.fileName] = {
+        applicationId: action.payload.applicationId,
+        name: action.payload.fileName,
+        pending: true,
+      };
+    },
     fetchFileSuccess(state, action) {
       state.fetchPending = false;
       action.payload.forEach((file) => {
         state[file.id] = file;
+        delete state[file.name];
       });
     },
     deleteFileSuccess(state, action) {
@@ -124,4 +131,5 @@ const fileSlice = createSlice({
 });
 
 const { fetchFileSuccess, deleteFileSuccess } = fileSlice.actions;
+export const { createFilePending } = fileSlice.actions;
 export default fileSlice.reducer;

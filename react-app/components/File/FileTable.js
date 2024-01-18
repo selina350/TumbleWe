@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 // import OpenModalButton from "../OpenModalButton";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -21,6 +21,8 @@ const FileTable = () => {
       return typeof value !== "boolean" && value.applicationId + "" === id;
     })
   );
+  console.log(files);
+
   const application = useSelector((state) => state.model.applications[id]);
 
   useEffect(() => {
@@ -31,7 +33,7 @@ const FileTable = () => {
     dispatch(
       displayConfirmation({
         message: "Are you sure about deleting this file?",
-        onConfirm: async() => {
+        onConfirm: async () => {
           await dispatch(deleteFile(FileId));
           dispatch(displayAlert("This file has been deleted sucessfully!"));
         },
@@ -56,10 +58,12 @@ const FileTable = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {file.name}
+                {file.name} {file.pending && <CircularProgress size={16} />}
               </TableCell>
               <TableCell>
-                <Button onClick={() => handleDelete(file.id)}>Delete</Button>
+                {!file.pending && (
+                  <Button onClick={() => handleDelete(file.id)}>Delete</Button>
+                )}
               </TableCell>
               {/*<TableCell align="right">{row.type}</TableCell>*/}
             </TableRow>

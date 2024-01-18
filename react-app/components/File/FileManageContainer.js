@@ -5,7 +5,7 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FileTable from "./FileTable";
 import { uploadFileToS3 } from "../../utils/FileUploadHelper";
 import { useDispatch } from "react-redux";
-import { createFile } from "../../redux/model/fileSlice";
+import { createFile, createFilePending } from "../../redux/model/fileSlice";
 import { useParams } from "react-router-dom";
 import { displayAlert } from "../../redux/controller/alertSlice";
 const FileManageContainer = () => {
@@ -17,6 +17,7 @@ const FileManageContainer = () => {
     const file = e.target.files[0];
     const fileName = file.name;
     const fileUrl = file.url;
+    dispatch(createFilePending({ applicationId: id, fileName }));
     await uploadFileToS3(file, id);
     const { message } = await dispatch(createFile(id, fileName, fileUrl));
     if (message) {
