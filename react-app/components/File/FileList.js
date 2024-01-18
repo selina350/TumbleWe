@@ -11,6 +11,7 @@ const FileList = () => {
       return typeof value !== "boolean" && value.applicationId === id;
     })
   );
+
   const application = useSelector((state) => state.model.applications[id]);
 
   useEffect(() => {
