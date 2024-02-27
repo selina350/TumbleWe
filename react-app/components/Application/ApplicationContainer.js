@@ -13,17 +13,14 @@ import {
   Typography,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllApps,
-  createApp,
-  editApp,
-} from "../../redux/model/applicationSlice";
+import { getAllApps, editApp } from "../../redux/model/applicationSlice";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import FileManageContainer from "../File/FileManageContainer";
 import PublicIcon from "@mui/icons-material/Public";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import StepTable from "../Step/StepTable";
+import ApplicationMockAPIContainer from "./ApplicationMockAPIContainer";
 
 const ApplicationContainer = ({ tab }) => {
   const { id } = useParams();
@@ -67,10 +64,12 @@ const ApplicationContainer = ({ tab }) => {
   };
 
   const handleSwitchTab = (tab) => {
-    if (tab === 1) {
-      navigate(`/application/${id}/steps`);
-    } else {
+    if (tab === 0) {
       navigate(`/application/${id}`);
+    } else if (tab === 1) {
+      navigate(`/application/${id}/steps`);
+    } else if (tab === 2) {
+      navigate(`/application/${id}/mock-api`);
     }
   };
 
@@ -151,14 +150,16 @@ const ApplicationContainer = ({ tab }) => {
         </Grid>
         <Grid item>
           <Tabs value={tab} onChange={(event, tab) => handleSwitchTab(tab)}>
-            <Tab label="Files" />
-            <Tab label="Steps" />
+            <Tab value={0} label="Files" />
+            <Tab value={1} label="Steps" />
+            <Tab value={2} label="Mock API" />
           </Tabs>
           <Divider />
         </Grid>
         <Grid item>
           {tab === 0 && <FileManageContainer />}
           {tab === 1 && <StepTable />}
+          {tab === 2 && <ApplicationMockAPIContainer />}
         </Grid>
       </Grid>
     </Box>
