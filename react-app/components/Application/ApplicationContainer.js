@@ -20,7 +20,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import EditIcon from "@mui/icons-material/Edit";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import StepTable from "../Step/StepTable";
-import ApplicationMockAPIContainer from "./ApplicationMockAPIContainer";
+import ApplicationMockAPIContainer from "./AppMockAPI/ApplicationMockAPIContainer";
 
 const ApplicationContainer = ({ tab }) => {
   const { id } = useParams();
