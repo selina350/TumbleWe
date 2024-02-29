@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -9,27 +11,42 @@ import Grid from "@mui/material/Grid";
 import { Box, Button, Drawer } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import MockAPIForm from "./MockAPIForm";
-
-//hard code data
-const apis = [
-  {
-    id: 1,
-    method: "GET",
-    path: "/api/test",
-    response: "value",
-    responseType: "text",
-  },
-  {
-    id: 2,
-    method: "POST",
-    path: "/api/post-test",
-    response: { key: "value" },
-    responseType: "json",
-  },
-];
+import {
+  getAllMockApis,
+  deleteMockApi,
+} from "../../../redux/model/mockApiSlice";
 
 const ApplicationMockAPIContainer = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const mockApis = useSelector((state) =>
+    Object.values(state.model.mockApis).filter((value) => {
+      return typeof value !== "boolean" && value.applicationId + "" === id;
+    })
+  );
+  const application = useSelector((state) => state.model.applications[id]);
+
+  useEffect(() => {
+    dispatch(getAllMockApis(id));
+  }, [dispatch]);
+
+  const handleEdit = (mockApi) => {
+    navigate(`/application/${id}/mockApis/${mockApi.id}/edit`);
+  };
+  const handleDelete = (mockApiId) => {
+    dispatch(
+      displayConfirmation({
+        message: "Are you sure about deleting this mockApi?",
+        onConfirm: async () => {
+          await dispatch(deleteMockApi(mockApiId));
+          dispatch(displayAlert("This step has been deleted sucessfully!"));
+        },
+      })
+    );
+  };
+
   return (
     <>
       <Paper>
@@ -55,15 +72,15 @@ const ApplicationMockAPIContainer = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {apis.map((api) => (
+            {mockApis.map((api) => (
               <TableRow key={api.id}>
                 <TableCell component="th" scope="row">
                   {api.method}
                 </TableCell>
                 <TableCell>{api.path}</TableCell>
                 <TableCell>
-                  <Button>Edit</Button>
-                  <Button>Delete</Button>
+                  <Button onClick={() => handleEdit(api)}>Edit</Button>
+                  <Button onClick={() => handleDelete(api)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

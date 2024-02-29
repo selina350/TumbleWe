@@ -10,6 +10,7 @@ from .api.auth_routes import auth_routes
 from .api.application_routes import application_routes
 from .api.file_routes import file_routes
 from .api.step_routes import step_routes
+from .api.mock_api_routes import mock_api_routes
 from .api.subdomain_routes import subdomain_routes
 from .api.static_routes import static_routes
 from .seeds import seed_commands
@@ -36,6 +37,7 @@ app.register_blueprint(auth_routes, url_prefix='/api/auth', subdomain="www")
 app.register_blueprint(application_routes, url_prefix='/api/applications', subdomain="www")
 app.register_blueprint(file_routes, url_prefix='/api', subdomain="www")
 app.register_blueprint(step_routes, url_prefix='/api', subdomain="www")
+app.register_blueprint(mock_api_routes, url_prefix='/api', subdomain="www")
 app.register_blueprint(static_routes, url_prefix='/', subdomain="www")
 app.register_blueprint(subdomain_routes, url_prefix='/', subdomain="<subdomain>")
 

@@ -58,7 +58,7 @@ const router = createBrowserRouter(
         }
       />
       <Route
-        path="/application/:id/mock-api"
+        path="/application/:id/mockApis"
         element={
           <LoginRequiredRoute>
             <ApplicationContainer tab={2} />

@@ -69,7 +69,7 @@ const ApplicationContainer = ({ tab }) => {
     } else if (tab === 1) {
       navigate(`/application/${id}/steps`);
     } else if (tab === 2) {
-      navigate(`/application/${id}/mock-api`);
+      navigate(`/application/${id}/mockApis`);
     }
   };
 
