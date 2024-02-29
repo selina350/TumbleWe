@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, IntegerField
+from wtforms import StringField, SelectField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 
@@ -17,17 +17,17 @@ def validatePath(form, field):
     raise ValidationError('Please enter a path.')
 
 def validateType(form,field):
-  type = field.data
-  if not type:
+  responseType = field.data
+  if not responseType:
     raise ValidationError("Please enter a type")
 
 def validateBody(form,field):
-  body = field.data
-  if not body:
+  responseBody = field.data
+  if not responseBody:
     raise ValidationError("Please enter a body")
 
 class MockApiForm(FlaskForm):
-  method = StringField('method', choices=["GET", "PUT","CREATE","DELETE"],validators=[DataRequired(), Length(max=50), validateMethod])
+  method = SelectField('method', choices=["GET", "PUT","POST","DELETE"],validators=[DataRequired(), Length(max=50), validateMethod])
   path =StringField('path', validators=[DataRequired(), validatePath])
-  type = StringField('responseType', choices=["TEXT", "JSON"],validators=[DataRequired(),validateType])
-  body = SelectField("responseBody", validators=[DataRequired(),validateBody])
+  responseType = SelectField('responseType', choices=["TEXT", "JSON"],validators=[DataRequired(),validateType])
+  responseBody = StringField("responseBody", validators=[DataRequired(),validateBody])

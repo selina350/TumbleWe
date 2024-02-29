@@ -80,7 +80,7 @@ const MockAPIForm = ({ apiId }) => {
     } else {
       //creation
       errors = await dispatch(
-        createMockApi(id, method, path, responseBody, responseType)
+        createMockApi(id, method, path, responseType,responseBody)
       );
     }
 
