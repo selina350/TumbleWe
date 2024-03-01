@@ -15,6 +15,8 @@ import {
   getAllMockApis,
   deleteMockApi,
 } from "../../../redux/model/mockApiSlice";
+import {displayConfirmation} from "../../../redux/controller/confirmationSlice"
+import { displayAlert } from "../../../redux/controller/alertSlice";
 
 const ApplicationMockAPIContainer = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
@@ -41,7 +43,7 @@ const ApplicationMockAPIContainer = () => {
         message: "Are you sure about deleting this mockApi?",
         onConfirm: async () => {
           await dispatch(deleteMockApi(mockApiId));
-          dispatch(displayAlert("This step has been deleted sucessfully!"));
+          dispatch(displayAlert("This mock api has been deleted sucessfully!"));
         },
       })
     );
@@ -80,7 +82,7 @@ const ApplicationMockAPIContainer = () => {
                 <TableCell>{api.path}</TableCell>
                 <TableCell>
                   <Button onClick={() => handleEdit(api)}>Edit</Button>
-                  <Button onClick={() => handleDelete(api)}>Delete</Button>
+                  <Button onClick={() => handleDelete(api.id)}>Delete</Button>
                 </TableCell>
               </TableRow>
             ))}

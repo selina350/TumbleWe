@@ -30,7 +30,7 @@ const MockAPIForm = ({ apiId }) => {
   const [responseBodyError, setResponseBodyError] = useState(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getAllMockApis(id));
@@ -80,7 +80,7 @@ const MockAPIForm = ({ apiId }) => {
     } else {
       //creation
       errors = await dispatch(
-        createMockApi(id, method, path, responseType,responseBody)
+        createMockApi(id, method, path, responseType, responseBody)
       );
     }
 
@@ -98,6 +98,15 @@ const MockAPIForm = ({ apiId }) => {
       console.error("Error creating api:", errors);
       // You can display error messages to the user or handle them as needed.
     }
+  };
+
+  const cancelHandler = (e) => {
+    setMethod("GET");
+    setPath("");
+    setResponseType("JSON");
+    setResponseBody("");
+    setPathError(null);
+    setResponseBodyError(null)
   };
 
   const pathInputValidation = (checkPath) => {
@@ -137,6 +146,7 @@ const MockAPIForm = ({ apiId }) => {
               </Grid>
               <Grid item>
                 <Select
+                  value={method}
                   labelId="mockapi-form-method-label"
                   select
                   fullWidth
@@ -164,7 +174,12 @@ const MockAPIForm = ({ apiId }) => {
                 </Grid>
               </Grid>
               <Grid item>
-                <TextField onChange={(e) => setPath(e.target.value)} fullWidth />
+                <TextField
+                  value={path}
+                  onChange={(e) => {setPath(e.target.value),pathInputValidation(e.target.value)}}
+                  fullWidth
+                />
+                {pathError !== null && <div className="error">{pathError}</div>}
               </Grid>
             </Grid>
             <Grid item container direction="column">
@@ -174,7 +189,13 @@ const MockAPIForm = ({ apiId }) => {
                 </Typography>
               </Grid>
               <Grid item>
-                <Select onChange={(e) => setResponseType(e.target.value)}labelId="mockapi-form-method-label" select fullWidth>
+                <Select
+                  value={responseType}
+                  onChange={(e) => setResponseType(e.target.value)}
+                  labelId="mockapi-form-method-label"
+                  select
+                  fullWidth
+                >
                   <MenuItem value={"TEXT"}>Text</MenuItem>
                   <MenuItem value={"JSON"}>Json</MenuItem>
                 </Select>
@@ -187,12 +208,22 @@ const MockAPIForm = ({ apiId }) => {
                 </Typography>
               </Grid>
               <Grid item>
-                <TextField onChange={(e) => setResponseBody(e.target.value)} multiline minRows={4} maxRows={10} fullWidth />
+                <TextField
+                  value={responseBody}
+                  onChange={(e) => {setResponseBody(e.target.value), responseBodyInputValidation(e.target.value)}}
+                  multiline
+                  minRows={4}
+                  maxRows={10}
+                  fullWidth
+                />
+                {responseBodyError !== null && <div className="error">{responseBodyError}</div>}
               </Grid>
             </Grid>
             <Grid item container direction="row" spacing={1}>
               <Grid item>
-                <Button variant="outlined">Cancel</Button>
+                <Button onClick={cancelHandler} variant="outlined">
+                  Cancel
+                </Button>
               </Grid>
               <Grid item>
                 <Button onClick={submitHandler} variant="contained">
