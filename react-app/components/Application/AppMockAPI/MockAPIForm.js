@@ -18,7 +18,7 @@ import {
 import { displayAlert } from "../../../redux/controller/alertSlice";
 import { useNavigate, useParams } from "react-router-dom";
 
-const MockAPIForm = ({ apiId }) => {
+const MockAPIForm = ({ apiId, onCancel, onFinish }) => {
   const { id } = useParams();
   const api = useSelector((state) => state.model.mockApis[apiId]);
 
@@ -93,6 +93,10 @@ const MockAPIForm = ({ apiId }) => {
       setResponseType("JSON");
       setResponseBody("");
       navigate(`/application/${id}/mockApis`);
+
+      if (typeof onFinish === "function") {
+        onFinish();
+      }
     } else {
       // Handle errors - API call encountered validation errors or other issues
       console.error("Error creating api:", errors);
@@ -106,7 +110,10 @@ const MockAPIForm = ({ apiId }) => {
     setResponseType("JSON");
     setResponseBody("");
     setPathError(null);
-    setResponseBodyError(null)
+    setResponseBodyError(null);
+    if (typeof onCancel === "function") {
+      onCancel();
+    }
   };
 
   const pathInputValidation = (checkPath) => {
@@ -176,7 +183,10 @@ const MockAPIForm = ({ apiId }) => {
               <Grid item>
                 <TextField
                   value={path}
-                  onChange={(e) => {setPath(e.target.value),pathInputValidation(e.target.value)}}
+                  onChange={(e) => {
+                    setPath(e.target.value),
+                      pathInputValidation(e.target.value);
+                  }}
                   fullWidth
                 />
                 {pathError !== null && <div className="error">{pathError}</div>}
@@ -210,13 +220,18 @@ const MockAPIForm = ({ apiId }) => {
               <Grid item>
                 <TextField
                   value={responseBody}
-                  onChange={(e) => {setResponseBody(e.target.value), responseBodyInputValidation(e.target.value)}}
+                  onChange={(e) => {
+                    setResponseBody(e.target.value),
+                      responseBodyInputValidation(e.target.value);
+                  }}
                   multiline
                   minRows={4}
                   maxRows={10}
                   fullWidth
                 />
-                {responseBodyError !== null && <div className="error">{responseBodyError}</div>}
+                {responseBodyError !== null && (
+                  <div className="error">{responseBodyError}</div>
+                )}
               </Grid>
             </Grid>
             <Grid item container direction="row" spacing={1}>

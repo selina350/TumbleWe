@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
@@ -20,22 +20,23 @@ import { displayAlert } from "../../../redux/controller/alertSlice";
 
 const ApplicationMockAPIContainer = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
+  const [seletedApiId, setSeletedApiId] = useState()
   const { id } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const mockApis = useSelector((state) =>
     Object.values(state.model.mockApis).filter((value) => {
       return typeof value !== "boolean" && value.applicationId + "" === id;
     })
   );
-  const application = useSelector((state) => state.model.applications[id]);
 
   useEffect(() => {
     dispatch(getAllMockApis(id));
   }, [dispatch]);
 
-  const handleEdit = (mockApi) => {
-    navigate(`/application/${id}/mockApis/${mockApi.id}/edit`);
+  const handleEdit = (mockApiId) => {
+    setSeletedApiId(mockApiId)
+    setDrawerOpen(true)
+
   };
   const handleDelete = (mockApiId) => {
     dispatch(
@@ -81,7 +82,7 @@ const ApplicationMockAPIContainer = () => {
                 </TableCell>
                 <TableCell>{api.path}</TableCell>
                 <TableCell>
-                  <Button onClick={() => handleEdit(api)}>Edit</Button>
+                  <Button onClick={() => handleEdit(api.id)}>Edit</Button>
                   <Button onClick={() => handleDelete(api.id)}>Delete</Button>
                 </TableCell>
               </TableRow>
@@ -94,7 +95,11 @@ const ApplicationMockAPIContainer = () => {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
-        <MockAPIForm />
+        <MockAPIForm
+          onCancel={() => setDrawerOpen(false)}
+          onFinish={() => setDrawerOpen(false)}
+          apiId={seletedApiId}
+        />
       </Drawer>
     </>
   );
