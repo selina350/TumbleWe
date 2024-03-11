@@ -1,33 +1,51 @@
 import os
-from flask import Blueprint,request, Response, abort
+from flask import Blueprint,request, Response, abort, jsonify
+import json
 from app.utils.s3_helper import get_s3_object
 from bs4 import BeautifulSoup
-from app.models import db, Application
+from app.models import db, Application, MockApi
 
 subdomain_routes = Blueprint('subdomain', __name__, subdomain="<subdomain>")
-SERVER_NAME = os.environ.get('SERVER_NAME')
+UI_SERVER_NAME = os.environ.get('UI_SERVER_NAME')
 
 #all applications that belong to the current user
-@subdomain_routes.route('/', defaults={'filename': 'index.html'})
-@subdomain_routes.route('/<path:filename>')
-def get_subdomain_files(subdomain, filename):
+@subdomain_routes.route('/', defaults={'pathname': 'index.html'})
+@subdomain_routes.route('/<path:pathname>')
+def get_subdomain_files(subdomain, pathname):
     print('subdomain', subdomain)
-    print('filename', filename)
+    print('pathname', pathname)
 
     application = Application.query.filter(Application.name == subdomain).first()
     if not application:
         return {"error":"application doesn't exist"}, 404
 
-    response, status_code = get_s3_object(filename, application.id)
+    # check mock api
+    mock_api = MockApi.query.filter(MockApi.path == "/" + pathname).first()
+
+    if mock_api:
+        print("mock_api",mock_api)
+        try:
+        # Try to convert the JSON string to a Python object
+            data = json.loads(mock_api.responseBody)
+        except json.JSONDecodeError:
+        # Handle the case where the JSON decoding fails
+            return jsonify({'error': 'Invalid JSON'}), 400
+        print("mock_api.responseBody",mock_api.responseBody)
+
+        return jsonify(data), 200
+
+    # get file
+    response, status_code = get_s3_object(pathname, application.id)
+    print("application.id",application.id)
     if status_code != 200:
         return response, status_code
 
-    if response and filename == 'index.html':
+    if response and pathname == 'index.html':
         # Assuming 'response.data' contains the original HTML content
         soup = BeautifulSoup(response.data, 'html.parser')
 
         # Create a script tag with a src attribute
-        script_tag = soup.new_tag('script', src=f'//www.{SERVER_NAME}/subdomain.js')
+        script_tag = soup.new_tag('script', src=f'//www.{UI_SERVER_NAME}/subdomain.js')
 
         # Append the script tag to the head section
         head_tag = soup.head

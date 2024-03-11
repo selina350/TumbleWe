@@ -5,6 +5,7 @@ import confirmationSlice from "./controller/confirmationSlice";
 import applicationReducer from "./model/applicationSlice";
 import fileReducer from "./model/fileSlice";
 import stepReducer from "./model/stepSlice";
+import mockApiReducer from "./model/mockApiSlice";
 
 import logger from "redux-logger";
 
@@ -18,6 +19,7 @@ const model = combineReducers({
   applications: applicationReducer,
   files: fileReducer,
   steps: stepReducer,
+  mockApis:mockApiReducer
 });
 export default configureStore({
   reducer: {

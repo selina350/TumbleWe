@@ -10,7 +10,10 @@ const isMockAPIEnabled = process.env.MOCK_API === "true";
 module.exports = {
   mode: "development",
   entry: {
-    subdomain: ["./subdomain/index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
+    subdomain: [
+      "./subdomain/index.js",
+      ...(isMockAPIEnabled ? ["./mockApi/index.js"] : []),
+    ],
     main: ["./index.js", ...(isMockAPIEnabled ? ["./mockApi/index.js"] : [])],
   },
   output: {
@@ -59,12 +62,15 @@ module.exports = {
   ],
   devtool: "source-map",
   devServer: {
+    server: "https",
     static: {
       directory: path.join(__dirname, "static"),
     },
     allowedHosts: ["www.testtestproject.com", "app.testtestproject.com"],
     setupMiddlewares: (middlewares, devServer) => {
-      devServer.app.get("/", function (req, res, next) {
+      console.log(isMockAPIEnabled);
+
+      devServer.app.get("/*", function (req, res, next) {
         const subdomain = req.headers.host.split(".")[0];
         if (!isMockAPIEnabled && subdomain !== "www") {
           createProxyMiddleware({

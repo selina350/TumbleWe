@@ -5,20 +5,14 @@ import {
   CardActionArea,
   CardContent,
   Grid,
-  Paper,
   Typography,
-  Button,
   Menu,
   MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createApp,
-  deleteApp,
-  getAllApps,
-} from "../../redux/model/applicationSlice";
+import { createApp, deleteApp } from "../../redux/model/applicationSlice";
 import { displayAlert } from "../../redux/controller/alertSlice";
 import { displayConfirmation } from "../../redux/controller/confirmationSlice";
 

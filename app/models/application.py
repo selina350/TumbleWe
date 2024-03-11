@@ -18,7 +18,7 @@ class Application(db.Model):
     owner = db.relationship("User", back_populates="applications")
     steps = db.relationship("Step", back_populates="application", cascade="all, delete-orphan")
     files = db.relationship("File", back_populates="application", cascade="all, delete-orphan")
-
+    mockApis = db.relationship("MockApi", back_populates="application", cascade="all, delete-orphan")
     def to_dict(self):
         return {
             "id": self.id,
@@ -40,4 +40,9 @@ class Application(db.Model):
     def get_steps(self):
         return {
             'files': [step.to_dict() for step in self.steps]
+        }
+
+    def get_apis(self):
+        return {
+            'mockApis': [mockApi.to_dict() for mockApi in self.mockApis]
         }
