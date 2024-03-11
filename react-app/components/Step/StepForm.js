@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { displayAlert } from "../../redux/controller/alertSlice";
 import { IconButton, Tooltip } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import AudioRecorder from "./AudioRecorder";
 
 const StepForm = ({ appId, stepId }) => {
   const step = useSelector((state) => state.model.steps[stepId]);
@@ -15,6 +16,7 @@ const StepForm = ({ appId, stepId }) => {
   const [selector, setSelector] = useState(step?.selector || "");
   const [selectorError, setSelectorError] = useState(null);
   const [innerHTML, setInnerHTML] = useState(step?.innerHTML || "");
+  const [audioFileName, setAudioFileName] = useState(step?.audioFileName || "");
   const [innerHTMLError, setInnerHTMLError] = useState(null);
   const [type, setType] = useState(step?.type || "input");
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
@@ -44,7 +46,6 @@ const StepForm = ({ appId, stepId }) => {
 
   const nameInputValidation = (checkName) => {
     if (checkName === undefined || checkName.length === 0) {
-
       setNameError("Name is required.");
     } else if (checkName.length > 255) {
       setNameError("Name is too long.");
@@ -81,12 +82,13 @@ const StepForm = ({ appId, stepId }) => {
           selector,
           type,
           innerHTML,
+          audioFileName,
         })
       );
     } else {
       //creation
       errors = await dispatch(
-        createStep(appId, name, selector, type, innerHTML)
+        createStep(appId, name, selector, type, innerHTML, audioFileName)
       );
     }
 
@@ -97,6 +99,7 @@ const StepForm = ({ appId, stepId }) => {
       setName("");
       setSelector("");
       setInnerHTML("");
+      setAudioFileName("");
       setType("input");
       navigate(`/application/${appId}/steps`);
     } else {
@@ -137,7 +140,6 @@ const StepForm = ({ appId, stepId }) => {
                   type="text"
                   value={name}
                   onChange={(e) => {
-             
                     setName(e.target.value);
                     nameInputValidation(e.target.value);
                   }}
@@ -209,6 +211,20 @@ const StepForm = ({ appId, stepId }) => {
                   value={innerHTML}
                   onChange={(e) => {
                     setInnerHTML(e.target.value);
+                  }}
+                />
+                (optional)
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label>Audio Record</label>
+              </td>
+              <td>
+                <AudioRecorder
+                  appId={appId}
+                  onChange={(fileName) => {
+                    setAudioFileName(fileName);
                   }}
                 />
                 (optional)

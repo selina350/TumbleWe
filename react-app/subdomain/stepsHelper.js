@@ -5,7 +5,12 @@ const sleep = (ms) => {
 export const performSteps = async (steps) => {
   for (const step of steps) {
     await sleep(1000);
-   
+
+    if (step?.audioFileName) {
+      const audio = new Audio(step?.audioFileName);
+      audio.play();
+    }
+
     switch (step?.type) {
       case "input":
         const input = document.querySelector(step?.selector);
