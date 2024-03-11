@@ -11,12 +11,14 @@ class Step(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     applicationId = db.Column(db.Integer(), db.ForeignKey(
         add_prefix_for_prod("applications.id")), nullable=False)
+    audioFileName = db.Column(db.String())
     name = db.Column(db.String(60), nullable=False)
-    url = db.Column(db.String())
+    # url = db.Column(db.String())
     innerHTML = db.Column(db.String())
     type = db.Column(db.String(50),nullable=False)
     order = db.Column(db.Integer())
     selector = db.Column(db.String(), nullable=False)
+
     createdAt = db.Column(db.DateTime, default=datetime.utcnow)
     updatedAt = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -27,9 +29,10 @@ class Step(db.Model):
         return {
             "id": self.id,
             "applicationId": self.applicationId,
+            "audioFileName": self.audioFileName,
             "name": self.name,
             "selector": self.selector,
-            "url": self.url,
+            # "url": self.url,
             "type":self.type,
             "innerHTML": self.innerHTML,
             "order":self.order

@@ -6,7 +6,7 @@ from flask_login import current_user, login_required
 from app.utils.validate_errors import validation_errors_to_error_messages
 from app.utils.subdomain_helper import extract_subdomain
 from wtforms import ValidationError
-
+from app.utils.s3_helper import copy_s3_object
 step_routes = Blueprint('steps', __name__)
 
 
@@ -38,10 +38,14 @@ def create_step(applicationId):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
+        audioFileName = data["audioFileName"]
+        if audioFileName:
+            copy_s3_object(data["name"], applicationId)
         new_step= Step(
             applicationId=application.id,
+            audioFileName = data["audioFileName"],
             name=data["name"],
-            url=data["url"],
+            # url=data["url"],
             selector=data["selector"],
             type=data["type"],
             innerHTML=data["innerHTML"],
@@ -101,8 +105,8 @@ def edit_step(stepId):
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         data = form.data
+        step.audioFileName = data["audioFileName"]
         step.name=data["name"]
-        step.url=data["url"]
         step.selector=data["selector"]
         step.type=data["type"]
         step.innerHTML=data["innerHTML"]

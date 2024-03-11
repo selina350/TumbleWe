@@ -25,8 +25,8 @@ def validateType(form,field):
     raise ValidationError("Please enter a type")
 
 class StepForm(FlaskForm):
+  audioFileName = StringField('audioFileName',validators=[Length(max=200)])
   name = StringField('name', validators=[DataRequired(), Length(max=50), validateName])
-  #url = URLField('url', validators=[validateImage])
   selector =StringField('selector', validators=[DataRequired(), validateSelector])
   url = StringField('url', validators=[Length(max=200)])
   type = SelectField("type", choices=["input", "buttonClick"], validators=[DataRequired(),validateType])
