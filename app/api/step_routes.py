@@ -40,10 +40,10 @@ def create_step(applicationId):
         data = form.data
         audioFileName = data["audioFileName"]
         if audioFileName:
-            copy_s3_object(data["name"], applicationId)
+            copy_s3_object(audioFileName, applicationId)
         new_step= Step(
             applicationId=application.id,
-            audioFileName = data["audioFileName"],
+            audioFileName = audioFileName,
             name=data["name"],
             # url=data["url"],
             selector=data["selector"],
@@ -103,8 +103,12 @@ def edit_step(stepId):
 
     form = StepForm()
     form['csrf_token'].data = request.cookies['csrf_token']
+
     if form.validate_on_submit():
         data = form.data
+        audioFileName = data["audioFileName"]
+        if audioFileName:
+            copy_s3_object(audioFileName, application.id)
         step.audioFileName = data["audioFileName"]
         step.name=data["name"]
         step.selector=data["selector"]

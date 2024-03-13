@@ -7,8 +7,7 @@ export const performSteps = async (steps) => {
     await sleep(1000);
 
     if (step?.audioFileName) {
-      const audio = new Audio(step?.audioFileName);
-      audio.play();
+      await playAndWaitAudioFile(step.audioFileName);
     }
 
     switch (step?.type) {
@@ -42,4 +41,12 @@ export const performSteps = async (steps) => {
         console.error("unexpected step type - " + step.type);
     }
   }
+};
+
+const playAndWaitAudioFile = (audioFileName) => {
+  return new Promise((resolve) => {
+    const audio = new Audio(audioFileName);
+    audio.play();
+    audio.onended = resolve;
+  });
 };
